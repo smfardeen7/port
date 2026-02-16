@@ -91,7 +91,7 @@ It's not about being pretty. It's about being **BOLD**.
 - **PHONE**: `571-386-9025`
 - **LINKEDIN**: [linkedin.com/in/shaikmofardeen](https://linkedin.com/in/shaikmofardeen)
 - **GITHUB**: [github.com/smfardeen7](https://github.com/smfardeen7)
-- **LOCATION**: `GMU / Remote`
+- **LOCATION**: `George Mason University, Fairfax, VA, 22030, USA`
 
 > MS Computer Science @ George Mason University. Full-Stack (MERN) & ML. Open to Software Engineering opportunities.
 
