@@ -1,20 +1,18 @@
 # Deploy this site to GitHub Pages
 
-The workflow in Actions **builds** on every push. The **deploy** happens automatically when you use "Deploy from a branch" (no 404, no extra step).
+The `deploy-pages` action often returns **404** when Pages isn’t set to “GitHub Actions”. Using **Deploy from a branch** avoids that and updates the site on every push.
 
-## One-time setup
+## One-time setup (do this once)
 
 1. Open **https://github.com/smfardeen7/port/settings/pages**
 2. Under **Build and deployment**:
-   - **Source:** choose **Deploy from a branch**
+   - **Source:** select **Deploy from a branch** (not “GitHub Actions”).
    - **Branch:** `main`
    - **Folder:** **/ (root)**
 3. Click **Save**
 
-## Result
+## What happens after
 
-- Every push to `main` runs the **Build** workflow in Actions.
-- GitHub Pages serves the **root** of `main`, so the site updates on each push.
+- Every push to `main` runs the **Build** job in Actions (green).
+- GitHub serves the **root** of `main` as the site, so each push **is** the deploy.
 - Live site: **https://smfardeen7.github.io/port/**
-
-No "Deploy" job is needed; the branch itself is the deployment.
