@@ -1,0 +1,9 @@
+{
+  "name": "neobrutalist-portfolio",
+  "version": "1.0.0",
+  "description": "NeoBrutalist portfolio - static HTML/CSS/JS",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "start": "npx serve . -l 3000"
+  }
+}
