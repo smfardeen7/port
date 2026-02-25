@@ -12,6 +12,12 @@ Your live site is **https://fardeen.bio/** on Vercel. To have every push to `mai
 4. Set **Production Branch** to `main` and save.
 5. From then on, every **push to `main`** triggers a Vercel deploy; the site updates in about a minute.
 
+**Connected but the site still doesn’t update?**
+
+1. **Production branch** — Vercel only updates the production URL (fardeen.bio) when you push to the **Production Branch**. In the project: **Settings** → **Git** → set **Production Branch** to **`main`** and save. If it was `master`, pushes to `main` would only create previews.
+2. **Check deployments** — **Deployments** tab: after a push, is there a new deployment? If the latest one is **Failed**, open it and check the build logs.
+3. **Confirm what’s live** — Open **https://fardeen.bio/build-info.json** to see the last build time and branch. The footer on the site also shows “Built &lt;date&gt;” for the deployed build.
+
 ### Option B: Deploy from GitHub Actions
 
 The workflow `.github/workflows/deploy-vercel.yml` deploys to Vercel on every push to `main`. You only need to add three **repository secrets** once.
