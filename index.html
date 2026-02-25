@@ -11,23 +11,23 @@
     <meta name="keywords"
         content="Mohammad Fardeen Shaik, Software Engineer, MERN, Machine Learning, GCP, React, Node.js, Python, Portfolio">
     <meta name="author" content="Shaik Mohammad Fardeen">
-    <link rel="canonical" href="https://shaikmofardeen.github.io/">
+    <link rel="canonical" href="https://fardeen.bio/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://shaikmofardeen.github.io/">
+    <meta property="og:url" content="https://fardeen.bio/">
     <meta property="og:title" content="Mohammad Fardeen Shaik | Software Engineer & ML">
     <meta property="og:description"
         content="MS Computer Science @ GMU. Software Engineer (MERN), ML/AI pipelines, GCP.">
-    <meta property="og:image" content="https://shaikmofardeen.github.io/Assets/images/og.png">
+    <meta property="og:image" content="https://fardeen.bio/Assets/images/og.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://shaikmofardeen.github.io/">
+    <meta property="twitter:url" content="https://fardeen.bio/">
     <meta property="twitter:title" content="Mohammad Fardeen Shaik | Software Engineer & ML">
     <meta property="twitter:description"
         content="MS Computer Science @ GMU. Software Engineer (MERN), ML/AI pipelines, GCP.">
-    <meta property="twitter:image" content="https://shaikmofardeen.github.io/Assets/images/og.png">
+    <meta property="twitter:image" content="https://fardeen.bio/Assets/images/og.png">
 
     <title>Mohammad Fardeen Shaik | Software Engineer & ML</title>
 
@@ -43,9 +43,9 @@
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Shaik Mohammad Fardeen",
-      "url": "https://github.com/smfardeen7",
+      "url": "https://fardeen.bio/",
       "jobTitle": "Software Engineering Intern | MS Computer Science",
-      "image": "https://shaikmofardeen.github.io/Assets/images/logo.png",
+      "image": "https://fardeen.bio/Assets/images/logo.png",
       "knowsAbout": ["React", "Node.js", "Python", "MERN", "Machine Learning", "GCP", "Flask", "FastAPI", "TensorFlow", "PyTorch"],
       "sameAs": [
         "https://github.com/smfardeen7",
@@ -573,6 +573,10 @@
                             <i class="ri-github-fill text-lg text-black"></i>
                         </div>
                         <h3 class="text-2xl font-black uppercase text-white">GITHUB</h3>
+                        <div class="flex items-center gap-1.5 ml-2">
+                            <div id="gh-live-dot" class="w-2 h-2 bg-neo-green rounded-full animate-pulse"></div>
+                            <span id="gh-live-label" class="font-mono text-neo-green text-xs font-bold">LIVE</span>
+                        </div>
                     </div>
 
                     <!-- GitHub Block -->
@@ -590,7 +594,7 @@
                             </div>
                             <div class="text-right">
                                 <div id="total-contributions"
-                                    class="text-2xl font-black text-neo-green tracking-tighter">--</div>
+                                    class="text-2xl font-black text-neo-green tracking-tighter">...</div>
                                 <p class="text-[8px] font-mono text-gray-500 uppercase">Commits</p>
                             </div>
                         </div>
@@ -602,15 +606,14 @@
                                 <div
                                     class="text-[9px] font-mono text-neo-green mb-1 uppercase tracking-widest opacity-70">
                                     Repositories</div>
-                                <div id="repos-count" class="text-white font-black text-3xl tracking-tighter">--</div>
+                                <div id="repos-count" class="text-white font-black text-3xl tracking-tighter">...</div>
                             </div>
                             <div
                                 class="border-2 border-neo-green/30 bg-neo-black/60 p-4 relative group overflow-hidden hover:border-neo-green transition-colors shadow-[4px_4px_0_rgba(51,255,87,0.1)]">
                                 <div
                                     class="text-[9px] font-mono text-neo-green mb-1 uppercase tracking-widest opacity-70">
                                     Followers</div>
-                                <div id="followers-count" class="text-white font-black text-3xl tracking-tighter">--
-                                </div>
+                                <div id="followers-count" class="text-white font-black text-3xl tracking-tighter">...</div>
                             </div>
                             <div
                                 class="border-2 border-neo-green/30 bg-neo-black/60 p-4 relative group overflow-hidden hover:border-neo-green transition-colors shadow-[4px_4px_0_rgba(51,255,87,0.1)]">
@@ -618,7 +621,7 @@
                                     class="text-[9px] font-mono text-neo-green mb-1 uppercase tracking-widest opacity-70">
                                     Commits</div>
                                 <div id="total-contributions-grid"
-                                    class="text-white font-black text-3xl tracking-tighter">--</div>
+                                    class="text-white font-black text-3xl tracking-tighter">...</div>
                             </div>
                             <div
                                 class="border-2 border-neo-green/30 bg-neo-black/60 p-4 relative group overflow-hidden hover:border-neo-green transition-colors shadow-[4px_4px_0_rgba(51,255,87,0.1)]">
@@ -626,21 +629,23 @@
                                     class="text-[9px] font-mono text-neo-green mb-1 uppercase tracking-widest opacity-70">
                                     Joined</div>
                                 <div id="created-at"
-                                    class="text-white font-black text-xl tracking-tighter mt-1 leading-none">--</div>
+                                    class="text-white font-black text-xl tracking-tighter mt-1 leading-none">...</div>
                             </div>
                         </div>
 
-                        <!-- Activity Graph parallel to LeetCode Heatmap -->
+                        <!-- Activity Graph: live contribution calendar -->
                         <div class="flex-1 flex flex-col justify-center mb-8">
                             <div
-                                class="bg-black border-2 border-neo-green/30 p-2 overflow-hidden shadow-[4px_4px_0_rgba(51,255,87,0.1)] group hover:border-neo-green transition-colors duration-500 relative">
-                                <!-- NeoBrutalist accent dot -->
-                                <div class="absolute top-1 right-1 w-1.5 h-1.5 bg-neo-green rounded-full animate-pulse">
+                                class="bg-black border-2 border-neo-green/30 p-3 overflow-hidden shadow-[4px_4px_0_rgba(51,255,87,0.1)] group hover:border-neo-green transition-colors duration-500 relative">
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-[10px] font-mono text-neo-green uppercase tracking-widest">Contribution Graph · Last 52 weeks</span>
+                                    <span class="flex items-center gap-1 text-[9px] font-mono text-neo-green/80">
+                                        <span class="w-1.5 h-1.5 bg-neo-green rounded-full animate-pulse"></span>
+                                        Live
+                                    </span>
                                 </div>
-                                <p class="text-[8px] font-mono text-neo-green/50 uppercase tracking-[0.2em] mb-1">
-                                    Matrix_Output</p>
-                                <img src="https://ghchart.rshah.org/33FF57/smfardeen7" alt="GitHub Contribution Graph"
-                                    class="w-full h-auto filter brightness-110" style="image-rendering: auto;" />
+                                <img id="gh-contribution-chart" src="" alt="GitHub contribution activity for smfardeen7 - last 52 weeks"
+                                    class="w-full h-auto rounded-sm" loading="lazy" />
                             </div>
                         </div>
 
@@ -1066,21 +1071,38 @@
                 if (contribHeader) contribHeader.textContent = contribValue;
                 if (contribGrid) contribGrid.textContent = contribValue;
 
+                const liveLabel = document.getElementById('gh-live-label');
+                const liveDot = document.getElementById('gh-live-dot');
+                if (liveLabel) { liveLabel.textContent = 'LIVE'; liveLabel.classList.add('text-neo-green'); }
+                if (liveDot) { liveDot.classList.add('bg-neo-green'); liveDot.classList.remove('bg-red-500'); }
+
             } catch (error) {
                 console.error('Error fetching GitHub stats:', error);
-                // Set fallback values for existing elements only
-                document.getElementById('repos-count').textContent = 'ERR';
-                document.getElementById('followers-count').textContent = 'ERR';
+                document.getElementById('repos-count').textContent = '—';
+                document.getElementById('followers-count').textContent = '—';
                 document.getElementById('created-at').textContent = 'N/A';
-                const contribElement = document.getElementById('total-contributions');
-                if (contribElement) {
-                    contribElement.textContent = 'API Error';
-                }
+                const ch = document.getElementById('total-contributions');
+                const cg = document.getElementById('total-contributions-grid');
+                if (ch) ch.textContent = '—';
+                if (cg) cg.textContent = '—';
+                const liveLabel = document.getElementById('gh-live-label');
+                const liveDot = document.getElementById('gh-live-dot');
+                if (liveLabel) { liveLabel.textContent = 'OFFLINE'; liveLabel.classList.remove('text-neo-green'); liveLabel.classList.add('text-gray-500'); }
+                if (liveDot) { liveDot.classList.remove('bg-neo-green'); liveDot.classList.add('bg-red-500'); }
             }
         }
 
         // Call on page load
         fetchGitHubStats();
+
+        // GitHub contribution chart: cache-bust daily so the graph updates
+        (function () {
+            var el = document.getElementById('gh-contribution-chart');
+            if (el) {
+                var date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+                el.src = 'https://ghchart.rshah.org/33FF57/smfardeen7?v=' + date;
+            }
+        })();
 
         // Scroll Reveal Logic
         const revealElements = document.querySelectorAll('.reveal');
