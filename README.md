@@ -1,99 +1,151 @@
-# Mohammad Fardeen Shaik // PORTFOLIO
+# Folio 2025
 
-```
-    ___    ____  __  ______    __  ___          ____  ____  ____  __________________  __    ________ 
-   /   |  / __ \/ / / / __ \  /  |/  /         / __ \/ __ \/ __ \/_  __/ ____/ __ \/ /   /  _/ __ \
-  / /| | / /_/ / /_/ / /_/ / / /|_/ /  ______ / /_/ / / / / /_/ / / / / /_  / / / / /    / // / / /
- / ___ |/ _, _/ __  / __  | / /  / /  /_____// ____/ /_/ / _, _/ / / / __/ / /_/ / /____/ // /_/ / 
-/_/  |_/_/ |_/_/ /_/_/ |_| /_/  /_/         /_/    \____/_/ |_| /_/ /_/    \____/_____/___/\____/  
-                                                            
->> SYSTEM_STATUS: ONLINE
->> THEME: NEO_BRUTALISM
->> VERSION: 2.0.0
-```
+![image info](./static/social/share-image.png)
 
-> **WARNING**: This is NOT a standard portfolio. It is a raw, unfiltered expression of code. No cookies. No trackers. Just pure HTML, CSS, and JS anarchy.
+## Setup
 
----
+Create `.env` file based on `.env.example`
 
-## /// MANIFESTO
+Download and install [Node.js](https://nodejs.org/en/download/) then run this followed commands:
 
-**Design is dying.** The web has become a sea of identical, sanitized templates. We are here to break the grid.
-This portfolio embraces **Neo-Brutalism**:
-- High Contrast
-- Raw Typography
-- Asymmetrical Layouts
-- "Ugly" on Purpose
+``` bash
+# Install dependencies
+npm install --force
 
-It's not about being pretty. It's about being **BOLD**.
+# Serve at localhost:1234
+npm run dev
 
----
-
-## /// TECH_STACK
-
-| COMPONENT | TECHNOLOGY | STATUS |
-| :--- | :--- | :--- |
-| **CORE** | `HTML5` | [OPTIMIZED] |
-| **STYLING** | `TailwindCSS` | [LOADED] |
-| **SCRIPTING** | `Vanilla JS` | [ACTIVE] |
-| **APIs** | `GitHub API` + `LeetCard` | [STREAMING] |
-| **ICONS** | `Remix Icons` | [LINKED] |
-| **FONTS** | `Space Grotesk` + `JetBrains Mono` | [IMPORTED] |
-
----
-
-## /// FEATURES_LOG
-
-### 01. CUSTOM_CURSOR
-> A custom-built cursor that reacts to interactive elements.
-> - **Normal State**: Small crosshair/dot.
-> - **Hover State**: Expands to a Neo-Yellow block with black borders.
-
-### 02. GLITCH_EFFECTS
-> CSS-only glitch animations on hover states.
-> - `mix-blend-mode: difference` for high contrast.
-> - Random translation keyframes for that "broken" feel.
-
-### 03. MARQUEE_SCROLL
-> Infinite scrolling text banners.
-> - Pure CSS animation.
-> - **Direction**: Left-to-Right & Right-to-Left.
-
-### 04. REVEAL_ANIMATION
-> Elements reveal themselves as you scroll.
-> - `IntersectionObserver` API.
-> - Smooth translate-Y transitions.
-
-### 05. CODING_STATS_INTEGRATION
-> Real-time data visualization of development activity.
-> - **Dual-Profile Interface**: Side-by-side GitHub and LeetCode stats.
-> - **Live GitHub API**: Dynamic fetching of Repos, Followers, and Commits.
-> - **LeetCard Integration**: Real-time LeetCode problem-solving heatmap.
-> - **Parallel Layout**: Perfectly balanced columns with mirrored headers and activity matrices.
-
----
-
-## /// FILE_STRUCTURE
-
-```bash
-.
-├── Assets/
-│   ├── images/          # [DIR] Project thumbnails & Avatar
-│   └── Resume/          # [DIR] CV PDF file
-├── index.html           # [FILE] Main Entry Point
-└── README.md            # [FILE] You are here
+# Build for production in the dist/ directory
+npm run build
 ```
 
-## /// CONTACT_COORDINATES
+## Game loop
 
-**TRANSMISSION OPEN:**
-- **MAIL**: `shaikfardeen595@gmail.com`
-- **PHONE**: `571-386-9025`
-- **LINKEDIN**: [linkedin.com/in/shaikmofardeen](https://linkedin.com/in/shaikmofardeen)
-- **GITHUB**: [github.com/smfardeen7](https://github.com/smfardeen7)
-- **LOCATION**: `George Mason University, Fairfax, VA, 22030, USA`
+#### 0
 
-> MS Computer Science @ George Mason University. Full-Stack (MERN) & ML. Open to Software Engineering opportunities.
+- Time
+- Inputs
 
----
-**© 2025 Mohammad Fardeen Shaik // SYSTEM_END**
+#### 1
+
+- Player:pre-physics (Inputs)
+
+#### 2
+
+- PhysicalVehicle:pre-physics (Player:pre-physics)
+
+#### 3
+
+- Physics
+
+#### 4
+
+- PhysicsWireframe (Physics)
+- Objects (Physics)
+
+#### 5
+
+- PhysicalVehicle:post-physics (Player:pre-physics)
+
+#### 6
+
+- Player:post-physics (Physics, PhysicalVehicle:post-physics)
+
+#### 7
+
+- View (Inputs, Player:post-physics)
+
+#### 8
+
+- Intro
+- DayCycles
+- YearCycles
+- Weather (DayCycles, YearCycles)
+- Zones (Player:post-physics)
+- VisualVehicle (PhysicalVehicle:post-physics, Inputs, Player:post-physics, View)
+
+#### 9
+
+- Wind (Weather)
+- Lighting (DayCycles, View)
+- Tornado (DayCycles, PhysicalVehicle)
+- InteractivePoints (Player:post-physics)
+- Tracks (VisualVehicle)
+
+#### 10
+
+- Area++ (View, PhysicalVehicle:post-physics, Player:post-physics, Wind)
+- Foliage (VisualVehicle, View)
+- Fog (View)
+- Reveal (DayCycles)
+- Terrain (Tracks)
+- Trails (PhysicalVehicle)
+- Floor (View)
+- Grass (View, Wind)
+- Leaves (View, PhysicalVehicle)
+- Lightnings (View, Weather)
+- RainLines (View, Weather, Reveal)
+- Snow (View, Weather, Reveal, Tracks)
+- VisualTornado (Tornado)
+- WaterSurface (Weather, View)
+- Benches (Objects)
+- Bricks (Objects)
+- ExplosiveCrates (Objects)
+- Fences (Objects)
+- Lanterns (Objects)
+- Whispers (Player)
+
+#### 13
+
+- InstancedGroup (Objects, [SpecificObjects])
+
+#### 14
+
+- Audio (View, Objects)
+- Notifications
+- Title (PhysicalVehicle:post-physics)
+
+#### 998
+
+- Rendering
+
+#### 999
+
+- Monitoring
+
+## Blender
+
+### Export
+
+- Mute the palette texture node (loaded and set in Three.js `Material` directly)
+- Use corresponding export presets
+- Don't use compression (will be done later)
+
+### Compress
+
+Run `npm run compress`
+
+Will do the following
+
+#### GLB
+
+- Traverses the `static/` folder looking for glb files (ignoring already compressed files)
+- Compresses embeded texture with `etc1s --quality 255` (lossy, GPU friendly)
+- Generates new files to preserve originals
+
+#### Texture files
+
+- Traverses the `static/` folder looking for `png|jpg` files (ignoring non-model related folders)
+- Compresses with default preset to `--encode etc1s --qlevel 255` (lossy, GPU friendly) or specific preset according to path
+- Generates new files to preserve originals
+
+#### UI files
+
+- Traverses the `static/ui.` folder looking for `png|jpg` files
+- Compresses to WebP
+
+#### Resources
+
+- https://gltf-transform.dev/cli
+- https://github.com/KhronosGroup/KTX-Software?tab=readme-ov-file
+- https://github.khronos.org/KTX-Software/ktxtools/toktx.html

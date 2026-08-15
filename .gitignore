@@ -1,24 +1,11 @@
-# System Files
 .DS_Store
-Thumbs.db
-*.log
-
-# IDE & Editor Files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Project Specific
-.gemini/
-node_modules/
-.env
-.env.local
-.dist/
-dist/
-build/
-
-# SEO & Search Console
-sitemap.xml
-robots.txt
-google*.html
+node_modules
+dist
+.vercel
+.VSCodeCounter
+.env*
+!.env.example
+.autosave
+.wav
+!static/sounds/music/*.wav
+/resources/
