@@ -64,7 +64,11 @@ export class Game
 
         Game.instance = this
 
-        this.init()
+        this.init().catch((error) =>
+        {
+            console.error(error)
+            document.documentElement.dataset.gameError = error.message
+        })
     }
 
     async init()
@@ -99,7 +103,7 @@ export class Game
         const compressedTextureFormat = compressed ? 'textureKtx' : 'texture'
         const compressedTextureExtension = compressed ? 'ktx' : 'png'
 
-        const cb = '?cb=1'
+        const cb = '?cb=3'
         this.resources = await this.resourcesLoader.load([
             [ 'respawnsReferencesModel',    `respawns/respawnsReferences${compressedModelSuffix}.glb${cb}`, 'gltf' ],
             [ 'behindTheSceneStarsTexture', `behindTheScene/stars.${compressedTextureExtension}${cb}`,      compressedTextureFormat, (resource) => { resource.colorSpace = THREE.SRGBColorSpace; resource.minFilter = THREE.NearestFilter; resource.magFilter = THREE.NearestFilter; resource.generateMipmaps = false; resource.wrapS = THREE.RepeatWrapping; resource.wrapT = THREE.RepeatWrapping; } ],
@@ -244,10 +248,7 @@ export class Game
 
             // Social
             if(this.world.areas.social)
-            {
                 this.world.areas.social.statue.down = false
-                this.world.areas.social.fans.instancedGroup.needsUpdate = true
-            }
             
             // Benches
             if(this.world.benches)

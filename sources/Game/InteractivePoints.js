@@ -191,6 +191,9 @@ export class InteractivePoints
         const newPosition = position.clone()
         // newPosition.y = 2.25
 
+        if(/only\s*fans/i.test(text))
+            return null
+
         /**
          * Group
          */
@@ -332,6 +335,8 @@ export class InteractivePoints
          * Item
          */
         const item = {}
+        item.text = text
+        item.group = group
         item.position = new THREE.Vector2(position.x, position.z)
         item.interactCallback = interactCallback
         item.revealCallback = revealCallback

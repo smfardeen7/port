@@ -9,8 +9,18 @@ export class ExplosiveCrates
     {
         this.game = Game.getInstance()
 
-        // Base and references
-        const [ base, references ] = InstancedGroup.getBaseAndReferencesFromInstances(this.game.resources.explosiveCratesModel.scene.children)
+        // Base and references (skip the crates sitting right next to the spawn point)
+        const spawnPosition = this.game.respawns.getDefault()?.position
+        const instances = this.game.resources.explosiveCratesModel.scene.children.filter((instance) =>
+        {
+            if(!spawnPosition)
+                return true
+
+            const distance = Math.hypot(instance.position.x - spawnPosition.x, instance.position.z - spawnPosition.z)
+            return distance > 10
+        })
+
+        const [ base, references ] = InstancedGroup.getBaseAndReferencesFromInstances(instances)
         this.references = references
         
         // Setup base

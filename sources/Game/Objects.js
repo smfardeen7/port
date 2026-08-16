@@ -220,12 +220,21 @@ export class Objects
 
     addFromModel(_model, _visualDescription = {}, _physicalDescription = {})
     {
-        // Add
+        if(/only\s*fans|^refFan$/i.test(_model?.name || ''))
+        {
+            _model.visible = false
+            _model.removeFromParent()
+            return { visual: null, physical: null, hiddenPermanently: true }
+        }
+
         return this.add(...this.getFromModel(_model, _visualDescription, _physicalDescription))
     }
 
     resetObject(object)
     {
+        if(object.hiddenPermanently)
+            return
+
         if(
             !object.physical ||
             (object.physical.type !== 'dynamic' && object.physical.type !== 'kinematicPositionBased') ||

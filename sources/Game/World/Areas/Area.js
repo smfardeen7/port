@@ -37,6 +37,13 @@ export class Area
         const children = [...this.model.children]
         for(const child of children)
         {
+            if(/only\s*fans|^refFan$|^(discord|twitch|x|youtube|bluesky|baguira|boy)PhysicalDynamic(\.\d+)?$/i.test(child.name || ''))
+            {
+                child.visible = false
+                child.removeFromParent()
+                continue
+            }
+
             if(typeof child.userData.preventAutoAdd === 'undefined' || child.userData.preventAutoAdd === false)
             {
                 const object = this.game.objects.addFromModel(

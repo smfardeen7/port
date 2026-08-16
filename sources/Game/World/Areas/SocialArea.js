@@ -2,7 +2,6 @@ import * as THREE from 'three/webgpu'
 import { Game } from '../../Game.js'
 import { InteractivePoints } from '../../InteractivePoints.js'
 import socialData from '../../../data/social.js'
-import { InstancedGroup } from '../../InstancedGroup.js'
 import { Area } from './Area.js'
 import { View } from '../../View.js'
 
@@ -24,8 +23,7 @@ export class SocialArea extends Area
         }
 
         this.setLinks()
-        this.setFans()
-        this.setOnlyFans()
+        this.trimUnusedPlinths()
         this.setStatue()
         // this.setFWA()
         this.setAchievement()
@@ -33,16 +31,24 @@ export class SocialArea extends Area
 
     setLinks()
     {
-        const radius = 6
-        let i = 0
-
         for(const link of socialData)
         {
-            const angle = i * Math.PI / (socialData.length - 1)
-            const position = this.center.clone()
-            position.x += Math.cos(angle) * radius
+            let position
+
+            if(link.position)
+            {
+                position = new THREE.Vector3(link.position.x, 0, link.position.z)
+            }
+            else
+            {
+                const statue = this.objects.items.find(
+                    object => object.visual?.object3D?.name === link.statue
+                )?.visual.object3D
+
+                position = (statue ? statue.position : this.center).clone()
+            }
+
             position.y = 1
-            position.z -= Math.sin(angle) * radius
 
             this.interactivePoint = this.game.interactivePoints.create(
                 position,
@@ -69,136 +75,66 @@ export class SocialArea extends Area
                     this.game.inputs.interactiveButtons.removeItems(['interact'])
                 }
             )
-            
-            i++
         }
     }
 
-    setFans()
+    trimUnusedPlinths()
     {
-        const baseFan = this.references.items.get('fan')[0]
-        baseFan.castShadow = true
-        baseFan.receiveShadow = true
+        // The square plinths under every icon are baked into one shared mesh (no per-icon
+        // node to hide), so the leftover ones from removed icons have to be cut out of its
+        // geometry directly. The plinth at (18.14, -18.14) is kept for the Resume link.
+        const mesh = this.objects.items.find(
+            object => object.visual?.object3D?.name === 'Cube133'
+        )?.visual.object3D
 
-        baseFan.position.set(0, 0, 0)
+        if(!mesh || !mesh.geometry.index)
+            return
 
-        // Update materials 
-        this.game.materials.updateObject(baseFan)
+        const zones = [
+            { x: 24.21, z: -25.81 }, // Twitch
+            { x: 33.82, z: -18.11 }, // X / Twitter
+            { x: 30.87, z: -24.21 }, // YouTube
+            { x: 33.05, z: -21.34 }, // Bluesky
+            { x: 39.57, z: -33.21 }, // OnlyFans
+        ]
+        const radius = 1.6
 
-        baseFan.removeFromParent()
-        
-        this.fans = {}
-        this.fans.spawnerPosition = this.references.items.get('onlyFans')[0].position
-        this.fans.count = 30
-        this.fans.visibleCount = 0
-        this.fans.currentIndex = 0
-        this.fans.mass = 0.02
-        this.fans.objects = []
+        mesh.updateWorldMatrix(true, false)
 
-        const references = []
+        const geometry = mesh.geometry
+        const position = geometry.attributes.position
+        const sourceIndex = geometry.index.array
+        const kept = []
+        const vertex = new THREE.Vector3()
 
-        for(let i = 0; i < this.fans.count; i++)
+        for(let i = 0; i < sourceIndex.length; i += 3)
         {
-            // Reference
-            const reference = new THREE.Object3D()
+            const a = sourceIndex[i], b = sourceIndex[i + 1], c = sourceIndex[i + 2]
+            let cx = 0, cz = 0
 
-            reference.position.copy(this.fans.spawnerPosition)
-            reference.position.y += 99
-            reference.needsUpdate = true
-            references.push(reference)
-            
-            // Object
-            const object = this.game.objects.add(
-                {
-                    model: reference,
-                    updateMaterials: false,
-                    castShadow: false,
-                    receiveShadow: false,
-                    parent: null,
-                },
-                {
-                    type: 'dynamic',
-                    position: reference.position,
-                    rotation: reference.quaternion,
-                    friction: 0.7,
-                    mass: this.fans.mass,
-                    sleeping: true,
-                    enabled: false,
-                    colliders: [ { shape: 'cuboid', parameters: [ 0.45, 0.65, 0.45 ], category: 'object' } ],
-                    waterGravityMultiplier: - 1
-                },
-            )
-
-            this.fans.objects.push(object)
-        }
-
-        this.fans.instancedGroup = new InstancedGroup(references, baseFan)
-
-        this.fans.pop = () =>
-        {
-            const object = this.fans.objects[this.fans.currentIndex]
-
-            const spawnPosition = this.fans.spawnerPosition.clone()
-            spawnPosition.x += (Math.random() - 0.5) * 4
-            spawnPosition.y += 4 * Math.random()
-            spawnPosition.z += (Math.random() - 0.5) * 4
-            object.physical.body.setTranslation(spawnPosition)
-            object.physical.body.setEnabled(true)
-            object.physical.body.setLinvel({ x: 0, y: 0, z: 0 })
-            object.physical.body.setAngvel({ x: 0, y: 0, z: 0 })
-            object.physical.body.wakeUp()
-            // this.game.ticker.wait(1, () =>
-            // {
-            //     object.physical.body.applyImpulse({
-            //         x: (Math.random() - 0.5) * this.fans.mass * 2,
-            //         y: Math.random() * this.fans.mass * 3,
-            //         z: this.fans.mass * 7
-            //     }, true)
-            //     object.physical.body.applyTorqueImpulse({ x: 0, y: 0, z: 0 }, true)
-            // })
-
-            this.fans.currentIndex = (this.fans.currentIndex + 1) % this.fans.count
-
-            this.fans.visibleCount = Math.min(this.fans.visibleCount + 1, this.fans.count)
-
-            // Sound
-            this.game.audio.groups.get('click').play(true)
-
-            // Achievement
-            this.game.achievements.setProgress('fan', 1)
-        }
-    }
-
-    setOnlyFans()
-    {
-        const interactiveArea = this.game.interactivePoints.create(
-            this.references.items.get('onlyFans')[0].position,
-            'OnlyFans',
-            InteractivePoints.ALIGN_RIGHT,
-            InteractivePoints.STATE_CONCEALED,
-            () =>
+            for(const vertexIndex of [ a, b, c ])
             {
-                this.fans.pop()
-            },
-            () =>
-            {
-                this.game.inputs.interactiveButtons.addItems(['interact'])
-            },
-            () =>
-            {
-                this.game.inputs.interactiveButtons.removeItems(['interact'])
-            },
-            () =>
-            {
-                this.game.inputs.interactiveButtons.removeItems(['interact'])
+                vertex.fromBufferAttribute(position, vertexIndex)
+                vertex.applyMatrix4(mesh.matrixWorld)
+                cx += vertex.x / 3
+                cz += vertex.z / 3
             }
-        )
+
+            const inRemovedZone = zones.some(zone => Math.hypot(cx - zone.x, cz - zone.z) < radius)
+            if(!inRemovedZone)
+                kept.push(a, b, c)
+        }
+
+        geometry.setIndex(kept)
+        geometry.computeBoundingBox()
+        geometry.computeBoundingSphere()
     }
 
     setStatue()
     {
         this.statue = {}
-        this.statue.body = this.references.items.get('statue')[0].userData.object.physical.body
+        const statue = this.references.items.get('statue')?.[0]
+        this.statue.body = statue?.userData?.object?.physical?.body
         this.statue.down = false
     }
 
@@ -288,17 +224,7 @@ export class SocialArea extends Area
 
     update()
     {
-        if(this.fans.visibleCount)
-        {
-            let allFansSleeping = true
-            for(const fan of this.fans.objects)
-                allFansSleeping = allFansSleeping && fan.physical.body.isSleeping()
-
-            if(!allFansSleeping)
-                this.fans.instancedGroup.updateBoundings()
-        }
-    
-        if(this.statue && !this.statue.down && !this.statue.body.isSleeping())
+        if(this.statue?.body && !this.statue.down && !this.statue.body.isSleeping())
         {
             const statueUp = new THREE.Vector3(0, 1, 0)
             statueUp.applyQuaternion(this.statue.body.rotation())
@@ -307,12 +233,6 @@ export class SocialArea extends Area
                 this.statue.down = true
                 this.game.achievements.setProgress('statueDown', 1)
             }
-        }
-
-        for(const object of this.fans.objects)
-        {
-            if(!object.physical.body.isSleeping() && object.physical.body.isEnabled())
-                object.visual.object3D.needsUpdate = true
         }
     }
 }

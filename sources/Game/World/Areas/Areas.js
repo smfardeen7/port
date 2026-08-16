@@ -43,7 +43,17 @@ export class Areas
             for(const [ name, AreaClass ] of list)
             {
                 if(child.name.startsWith(name))
-                    this[name] = new AreaClass(child)
+                {
+                    try
+                    {
+                        this[name] = new AreaClass(child)
+                    }
+                    catch(error)
+                    {
+                        console.error(`[areas] failed to init "${name}"`, error)
+                        document.documentElement.dataset.areaError = `${name}: ${error.message}`
+                    }
+                }
             }
         }
 

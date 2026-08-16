@@ -67,7 +67,8 @@ export class LandingArea extends Area
             const material = new THREE.MeshBasicNodeMaterial({ transparent: true })
             material.outputNode = Fn(() =>
             {
-                texture(textCanvas.texture, uv()).r.lessThan(0.45).discard()
+                // The sign faces away from the camera, mirroring the text — flip the sampled V to read correctly
+                texture(textCanvas.texture, vec2(uv().x, uv().y.oneMinus())).r.lessThan(0.45).discard()
                 return vec4(1.8)
             })()
 
@@ -82,7 +83,7 @@ export class LandingArea extends Area
         }
 
         createSign(['FARDEEN'], 7.4, 1.35, 0.55)
-        createSign(['AI ENGINEER'], 7.4, 0.95, -0.45)
+        createSign(['SOFTWARE ENGINEER'], 7.4, 0.95, -0.45)
     }
 
     setKiosk()
