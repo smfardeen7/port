@@ -1,4 +1,5 @@
 import * as THREE from 'three/webgpu'
+import { Fn, texture as textureNode, uv, vec4 } from 'three/tsl'
 import { Game } from '../../Game.js'
 import { InteractivePoints } from '../../InteractivePoints.js'
 import socialData from '../../../data/social.js'
@@ -24,6 +25,7 @@ export class SocialArea extends Area
 
         this.setLinks()
         this.trimUnusedPlinths()
+        this.setResumeStatue()
         this.setStatue()
         // this.setFWA()
         this.setAchievement()
@@ -128,6 +130,100 @@ export class SocialArea extends Area
         geometry.setIndex(kept)
         geometry.computeBoundingBox()
         geometry.computeBoundingSphere()
+    }
+
+    setResumeStatue()
+    {
+        // There's no pre-modelled icon for "Resume", so build a small plaque-on-a-post
+        // statue matching the style of the other social icons, on the plinth kept free
+        // in trimUnusedPlinths(). Anchored at the same world position (and ground height)
+        // the removed Discord icon used to occupy, so it sits correctly on its plinth.
+        const link = socialData.find(item => item.name === 'Resume')
+
+        if(!link?.position)
+            return
+
+        const base = new THREE.Vector3(link.position.x, 1.56, link.position.z)
+
+        // Support post
+        const post = new THREE.Mesh(
+            new THREE.CylinderGeometry(0.035, 0.045, 0.5, 8),
+            new THREE.MeshStandardNodeMaterial({ color: '#2c2740', roughness: 0.6, metalness: 0.2 })
+        )
+        post.position.copy(base)
+        post.position.y += 0.25
+        post.castShadow = true
+        post.receiveShadow = true
+        this.game.scene.add(post)
+
+        // Plaque face: a document icon (folded corner + text lines) drawn on a canvas,
+        // using the same alpha-cutout shading as the landing sign.
+        const size = 256
+        const canvas = document.createElement('canvas')
+        canvas.width = size
+        canvas.height = size
+        const context = canvas.getContext('2d')
+        context.fillStyle = '#000000'
+        context.fillRect(0, 0, size, size)
+        context.strokeStyle = '#ffffff'
+        context.lineWidth = 10
+        context.lineJoin = 'round'
+        context.lineCap = 'round'
+
+        const margin = 44
+        const fold = 46
+        context.beginPath()
+        context.moveTo(margin, margin)
+        context.lineTo(size - margin - fold, margin)
+        context.lineTo(size - margin, margin + fold)
+        context.lineTo(size - margin, size - margin)
+        context.lineTo(margin, size - margin)
+        context.closePath()
+        context.stroke()
+
+        context.beginPath()
+        context.moveTo(size - margin - fold, margin)
+        context.lineTo(size - margin - fold, margin + fold)
+        context.lineTo(size - margin, margin + fold)
+        context.stroke()
+
+        context.lineWidth = 9
+        const lineStart = margin + 26
+        const lineEnd = size - margin - 26
+        for(const y of [ 112, 144, 176 ])
+        {
+            context.beginPath()
+            context.moveTo(lineStart, y)
+            context.lineTo(lineEnd, y)
+            context.stroke()
+        }
+        context.beginPath()
+        context.moveTo(lineStart, 208)
+        context.lineTo(lineEnd - 40, 208)
+        context.stroke()
+
+        const iconTexture = new THREE.Texture(canvas)
+        iconTexture.needsUpdate = true
+        iconTexture.colorSpace = THREE.SRGBColorSpace
+        iconTexture.minFilter = THREE.LinearFilter
+        iconTexture.generateMipmaps = false
+
+        const plaqueMaterial = new THREE.MeshBasicNodeMaterial({ transparent: true })
+        plaqueMaterial.outputNode = Fn(() =>
+        {
+            textureNode(iconTexture, uv()).r.lessThan(0.5).discard()
+            return vec4(1.8)
+        })()
+
+        const plaque = new THREE.Mesh(new THREE.PlaneGeometry(0.65, 0.65), plaqueMaterial)
+        plaque.position.copy(base)
+        plaque.position.y += 0.85
+        plaque.rotation.x = -0.35
+        plaque.rotation.y = 0.5
+        plaque.renderOrder = 2
+        plaque.castShadow = false
+        plaque.receiveShadow = false
+        this.game.scene.add(plaque)
     }
 
     setStatue()
