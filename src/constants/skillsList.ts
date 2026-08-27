@@ -1,11 +1,13 @@
 import type { IconType } from "react-icons";
 import { AiFillGithub } from "react-icons/ai";
 import {
-  SiApacheairflow, SiCplusplus, SiCss3, SiDocker, SiFastapi,
-  SiFlask, SiGit, SiGithubactions, SiGooglecloud, SiHtml5, SiJavascript,
-  SiJest, SiJupyter, SiLinux, SiMysql, SiNumpy,
+  SiApacheairflow, SiBootstrap, SiCplusplus, SiCss3, SiDocker, SiExpress,
+  SiFastapi, SiFlask, SiFlutter, SiGit, SiGithubactions, SiGooglecloud,
+  SiGraphql, SiHtml5, SiIntellijidea, SiJavascript, SiJest, SiJquery,
+  SiJupyter, SiKubernetes, SiLinux, SiMysql, SiNetlify, SiNumpy,
   SiOpenjdk, SiPandas, SiPostman, SiPytorch, SiPython, SiR, SiReact,
-  SiScikitlearn, SiStreamlit, SiTensorflow, SiTypescript,
+  SiRedux, SiScikitlearn, SiStreamlit, SiTailwindcss, SiTensorflow,
+  SiTypescript, SiVite,
 } from "react-icons/si";
 import { VscAzure, VscCode } from "react-icons/vsc";
 import { FaTerminal } from "react-icons/fa6";
@@ -26,10 +28,14 @@ export const SKILLS_LIST: SkillGroup[] = [
     { id: "ai-3", icon: SiScikitlearn, name: "Scikit-learn" }, { id: "ai-4", icon: SiPandas, name: "Pandas" },
     { id: "ai-5", icon: SiNumpy, name: "NumPy" }, { id: "ai-6", icon: SiJupyter, name: "Jupyter" },
   ] },
-  { title: "Web & Data", items: [
+  { title: "Frameworks, Libraries & Data", items: [
     { id: "wd-1", icon: SiReact, name: "React" }, { id: "wd-2", icon: SiFastapi, name: "FastAPI" },
     { id: "wd-3", icon: SiFlask, name: "Flask" }, { id: "wd-4", icon: SiStreamlit, name: "Streamlit" },
     { id: "wd-5", icon: SiMysql, name: "MySQL" }, { id: "wd-6", icon: SiApacheairflow, name: "Airflow" },
+    { id: "wd-7", icon: SiRedux, name: "Redux" }, { id: "wd-8", icon: SiBootstrap, name: "Bootstrap" },
+    { id: "wd-9", icon: SiTailwindcss, name: "Tailwind CSS" }, { id: "wd-10", icon: SiJquery, name: "jQuery" },
+    { id: "wd-11", icon: SiExpress, name: "Express" }, { id: "wd-12", icon: SiGraphql, name: "GraphQL" },
+    { id: "wd-13", icon: SiFlutter, name: "Flutter" },
   ] },
   { title: "Tools & Platforms", items: [
     { id: "tp-1", icon: SiGit, name: "Git" }, { id: "tp-2", icon: AiFillGithub, name: "GitHub" },
@@ -38,5 +44,7 @@ export const SKILLS_LIST: SkillGroup[] = [
     { id: "tp-7", icon: SiPostman, name: "Postman" }, { id: "tp-8", icon: SiJest, name: "Jest" },
     { id: "tp-9", icon: VscAzure, name: "Microsoft Azure" }, { id: "tp-10", icon: SiGooglecloud, name: "Google Cloud" },
     { id: "tp-11", icon: SiPython, name: "Azure OpenAI" },
+    { id: "tp-12", icon: SiNetlify, name: "Netlify" }, { id: "tp-13", icon: SiVite, name: "Vite" },
+    { id: "tp-14", icon: SiIntellijidea, name: "IntelliJ IDEA" }, { id: "tp-15", icon: SiKubernetes, name: "Kubernetes" },
   ] },
 ];
