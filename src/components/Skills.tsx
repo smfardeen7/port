@@ -77,9 +77,10 @@ export default function Skills() {
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="section-title">Skills</h2>
+        <span className="eyebrow">skills</span>
+        <h2 className="section-title">Tools of the trade</h2>
         <p className="section-subtitle">
-          Technologies and tools I work with
+          Technologies I reach for, grouped by where they fit
         </p>
       </motion.div>
 

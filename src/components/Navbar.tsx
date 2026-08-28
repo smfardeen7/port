@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import { NAV_LINKS } from "@/constants";
 import ThemeToggle from "./ThemeToggle";
 import Magnetic from "./Magnetic";
+import { openCommandPalette } from "./CommandPalette";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,24 +58,24 @@ export default function Navbar() {
       transition={{ duration: 0.5, ease: "easeOut" }}
       className={`fixed top-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "border-b border-border/50 bg-background/80 backdrop-blur-lg"
+          ? "border-b border-white/10 bg-background/70 shadow-lg shadow-black/5 backdrop-blur-2xl"
           : "bg-transparent"
       }`}
     >
-      <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Magnetic strength={0.3}>
           <a
             href="#"
             aria-label="Go to top"
-            className="text-lg font-bold tracking-tight transition-colors hover:text-accent"
+            className="font-display text-lg font-bold tracking-tight transition-colors hover:text-accent"
           >
             <span className="text-muted-foreground">&lt;</span>
-            SN
+            MF
             <span className="text-muted-foreground"> /&gt;</span>
           </a>
         </Magnetic>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-6 md:flex lg:gap-8">
           {NAV_LINKS.map((item) => (
             <Magnetic key={item.link} strength={0.25}>
               <a
@@ -97,11 +98,34 @@ export default function Navbar() {
             </Magnetic>
           ))}
           <Magnetic strength={0.3}>
+            <button
+              onClick={openCommandPalette}
+              className="group flex items-center gap-2 rounded-full border border-border
+                         bg-card/50 py-1.5 pl-2.5 pr-2 text-xs text-muted-foreground
+                         transition-colors hover:border-accent/40 hover:text-foreground"
+              aria-label="Open command palette"
+            >
+              <Search className="h-3.5 w-3.5" />
+              <span>Search</span>
+              <kbd className="rounded border border-border bg-muted/60 px-1.5 py-0.5 font-mono text-[10px]">
+                ⌘K
+              </kbd>
+            </button>
+          </Magnetic>
+          <Magnetic strength={0.3}>
             <ThemeToggle />
           </Magnetic>
         </div>
 
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-2 md:hidden">
+          <button
+            onClick={openCommandPalette}
+            className="flex h-9 w-9 items-center justify-center rounded-full
+                       border border-border bg-card"
+            aria-label="Open command palette"
+          >
+            <Search className="h-4 w-4" />
+          </button>
           <ThemeToggle />
           <button
             onClick={() => setIsOpen(!isOpen)}

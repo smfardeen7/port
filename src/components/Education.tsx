@@ -6,8 +6,9 @@ export default function Education() {
   return (
     <section id="education" className="section-container">
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-100px" }} transition={{ duration: 0.5 }}>
-        <h2 className="section-title">Education</h2>
-        <p className="section-subtitle">Academic background</p>
+        <span className="eyebrow">education</span>
+        <h2 className="section-title">Academic background</h2>
+        <p className="section-subtitle">Two degrees in computer science</p>
       </motion.div>
       <div className="mt-12 grid gap-5 md:grid-cols-2">
         {EDUCATION_LIST.map((edu, index) => (

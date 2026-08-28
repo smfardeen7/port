@@ -10,6 +10,12 @@ export type { Experience, Position, TechItem } from "./experience";
 export { EDUCATION_LIST } from "./education";
 export type { Education } from "./education";
 
+export { CERTIFICATIONS } from "./certifications";
+export type { Certification } from "./certifications";
+
+export { PUBLICATIONS } from "./publications";
+export type { Publication } from "./publications";
+
 export { PROJECTS } from "./projects";
 export type { Project, TechIcon } from "./projects";
 
@@ -30,7 +36,8 @@ export const ABOUT_ME = {
 export const NAV_LINKS = [
   { link: "#experience", title: "Experience" },
   { link: "#skills", title: "Skills" },
-  { link: "#education", title: "Education" },
+  { link: "#certifications", title: "Certifications" },
   { link: "#projects", title: "Projects" },
+  { link: "#github", title: "GitHub" },
   { link: "#contact", title: "Contact" },
 ];

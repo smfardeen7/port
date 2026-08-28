@@ -16,13 +16,19 @@ A modern, responsive developer portfolio built with React, TypeScript, and Tailw
 ## Features
 
 - Dark mode as default with toggleable light theme
+- Command palette (`⌘K` / `Ctrl-K`): jump to any section, copy email, open résumé, toggle theme
+- Ambient animated aurora background with grain and a fading dot grid
+- Live GitHub stats pulled client-side from the GitHub API (repos, followers, forks, top languages), cached in `localStorage`
+- Project cards open a detail modal; filter chips by category (AI & ML / Full-Stack / Research)
+- Rotating role headline, cursor-tracking hero spotlight, and a top scroll-progress bar
+- Animated count-up stats in the TL;DR section
+- Copy-email button with confirmation toast
 - Custom animated cursor with magnetic hover effects on links and buttons
 - Infinite scrolling marquee keyword strip
 - Lottie animations (hero section, education section, loading screen)
 - Active section highlighting in navbar via IntersectionObserver
-- AI, machine-learning, and software project showcase
 - Scroll-to-top button and floating TL;DR shortcut
-- Responsive design across all breakpoints
+- Responsive design across all breakpoints, with `prefers-reduced-motion` respected
 - Smooth scroll with hash-based navigation
 
 ## Sections
@@ -30,11 +36,14 @@ A modern, responsive developer portfolio built with React, TypeScript, and Tailw
 | Section | Description |
 |---------|-------------|
 | Hero | Introduction with Lottie animation, social links, and CTAs |
-| Experience | AI and full-stack experience at Quadrant Technologies and Ethnus Codemithra |
+| Experience | Roles at Quadrant Technologies, Pratham USA, and Ethnus Codemithra |
 | Skills | Interactive grid of tech skills grouped by category |
 | Education | Academic background with institution logo and Lottie animation |
-| Projects | Project showcase with icons and tech stack tags |
-| TL;DR | Quick summary with key stats and a stylized code block |
+| Certifications | Licenses and programs, with issuer, date, and skills |
+| Projects | Filterable project showcase (AI & ML / Full-Stack / DevOps / Research); each card opens a detail modal |
+| Publications | Peer-reviewed research, with venue and summary |
+| GitHub | Live stats and most-used languages from the GitHub API |
+| TL;DR | Quick summary with animated key stats and a stylized code block |
 | Contact | Profile photo, social links, email, and resume |
 
 ## Getting Started

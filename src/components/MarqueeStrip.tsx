@@ -18,7 +18,7 @@ function KeywordSet() {
     <>
       {KEYWORDS.map((word, i) => (
         <span key={`${word}-${i}`} className="flex shrink-0 items-center gap-6">
-          <span className="whitespace-nowrap text-sm font-medium text-foreground/80 md:text-base">
+          <span className="whitespace-nowrap font-mono text-xs font-medium uppercase tracking-[0.15em] text-foreground/70 md:text-sm">
             {word}
           </span>
           <span className="text-accent/60">&#9670;</span>

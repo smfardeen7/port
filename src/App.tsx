@@ -1,16 +1,21 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import Loading from "@/components/Loading";
-import GradientOrbs from "@/components/GradientOrbs";
+import Aurora from "@/components/Aurora";
 import CustomCursor from "@/components/CustomCursor";
 import ScrollToTop from "@/components/ScrollToTop";
+import ScrollProgress from "@/components/ScrollProgress";
+import CommandPalette from "@/components/CommandPalette";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import MarqueeStrip from "@/components/MarqueeStrip";
 import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
 import Education from "@/components/Education";
+import Certifications from "@/components/Certifications";
 import Projects from "@/components/Projects";
+import Publications from "@/components/Publications";
+import GitHubStats from "@/components/GitHubStats";
 import TLDR from "@/components/TLDR";
 import Footer from "@/components/Footer";
 import LightModeBanner from "@/components/LightModeBanner";
@@ -20,7 +25,8 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2400);
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const timer = setTimeout(() => setLoading(false), reduce ? 400 : 2400);
     return () => clearTimeout(timer);
   }, []);
 
@@ -42,9 +48,11 @@ export default function App() {
 
       {!loading && (
         <div className="relative min-h-screen">
+          <Aurora />
           <CustomCursor />
           <LightModeBanner />
-          <GradientOrbs />
+          <ScrollProgress />
+          <CommandPalette />
           <Navbar />
           <ScrollToTop />
           <TLDRFloat />
@@ -54,7 +62,10 @@ export default function App() {
             <Experience />
             <Skills />
             <Education />
+            <Certifications />
             <Projects />
+            <Publications />
+            <GitHubStats />
             <TLDR />
             <Footer />
           </main>

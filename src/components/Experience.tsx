@@ -11,8 +11,9 @@ export default function Experience() {
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.5 }}
       >
-        <h2 className="section-title">Experience</h2>
-        <p className="section-subtitle">Where I've worked and contributed</p>
+        <span className="eyebrow">experience</span>
+        <h2 className="section-title">Where I've worked</h2>
+        <p className="section-subtitle">Roles, teams, and what I shipped</p>
       </motion.div>
 
       <div className="relative mt-12">
