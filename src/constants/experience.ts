@@ -12,7 +12,7 @@ import {
 
 export interface TechItem { id: string; icon: IconType; name: string; }
 export interface Position { title: string; duration: string; content?: { text: string; link?: string; tech?: TechItem[] }[]; }
-export interface Experience { organisation: string; logo?: string; link: string; positions: Position[]; }
+export interface Experience { organisation: string; badge?: string; logo?: string; link: string; positions: Position[]; }
 
 export const EXPERIENCES: Experience[] = [
   {
@@ -31,6 +31,14 @@ export const EXPERIENCES: Experience[] = [
     positions: [{ title: "Event Coordinator (Volunteer) · Washington, DC", duration: "Nov 2025 — Dec 2025", content: [
       { text: "Coordinated the annual fundraising gala for 350+ attendees, managing vendor relationships, logistics, and stakeholder communications." },
       { text: "Led cross-functional coordination and project management in a high-stakes nonprofit environment supporting education for underprivileged children." },
+    ] }],
+  },
+  {
+    organisation: "IEEE Computer Society",
+    badge: "IEEE",
+    link: "https://www.computer.org/",
+    positions: [{ title: "Events Head", duration: "Mar 2022 — Dec 2024", content: [
+      { text: "Led large-scale technical events and hackathons with participation exceeding 700 students." },
     ] }],
   },
   {

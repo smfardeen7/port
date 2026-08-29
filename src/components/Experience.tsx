@@ -36,9 +36,24 @@ export default function Experience() {
               <div className="glass-card p-5">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 text-sm font-bold text-accent">
-                      {exp.organisation.split(" ").map((word) => word[0]).slice(0, 2).join("")}
-                    </div>
+                    {(() => {
+                      const label =
+                        exp.badge ??
+                        exp.organisation
+                          .split(" ")
+                          .map((word) => word[0])
+                          .slice(0, 2)
+                          .join("");
+                      return (
+                        <div
+                          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent/10 font-bold text-accent ${
+                            label.length > 2 ? "text-[10px] tracking-tight" : "text-sm"
+                          }`}
+                        >
+                          {label}
+                        </div>
+                      );
+                    })()}
                     <div>
                       <a
                         href={exp.link}
