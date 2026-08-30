@@ -1,7 +1,7 @@
 import type { IconType } from "react-icons";
 import { AiFillGithub } from "react-icons/ai";
 import {
-  SiApacheairflow, SiBootstrap, SiC, SiCplusplus, SiCss3, SiDocker, SiExpress,
+  SiAnthropic, SiApacheairflow, SiBootstrap, SiC, SiClaude, SiCplusplus, SiCss3, SiDocker, SiExpress,
   SiFastapi, SiFirebase, SiFlask, SiFlutter, SiGit, SiGithubactions,
   SiGooglecloud, SiGraphql, SiHtml5, SiIntellijidea, SiJavascript, SiJenkins,
   SiJest, SiJquery, SiJupyter, SiKubernetes, SiLinux, SiMysql, SiNetlify,
@@ -25,6 +25,7 @@ export const SKILLS_LIST: SkillGroup[] = [
     { id: "pl-9", icon: SiHtml5, name: "HTML" }, { id: "pl-10", icon: SiCss3, name: "CSS" },
   ] },
   { title: "AI & Machine Learning", items: [
+    { id: "ai-7", icon: SiAnthropic, name: "Anthropic API" }, { id: "ai-8", icon: SiClaude, name: "Claude" },
     { id: "ai-1", icon: SiTensorflow, name: "TensorFlow" }, { id: "ai-2", icon: SiPytorch, name: "PyTorch" },
     { id: "ai-3", icon: SiScikitlearn, name: "Scikit-learn" }, { id: "ai-4", icon: SiPandas, name: "Pandas" },
     { id: "ai-5", icon: SiNumpy, name: "NumPy" }, { id: "ai-6", icon: SiJupyter, name: "Jupyter" },

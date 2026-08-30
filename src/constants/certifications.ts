@@ -11,6 +11,21 @@ export interface Certification {
 
 export const CERTIFICATIONS: Certification[] = [
   {
+    id: "cert-anthropic-claude-api",
+    title: "Claude with the Anthropic API",
+    issuer: "Anthropic",
+    date: "Aug 2026",
+    url: "/anthropic-claude-api-certificate.pdf",
+    skills: [
+      "Anthropic API",
+      "Claude",
+      "Prompt Engineering",
+      "Tool Use",
+      "LLM Integration",
+      "RAG",
+    ],
+  },
+  {
     id: "cert-quadrant",
     title: "Quadrant Internship Program",
     issuer: "Quadrant Technologies",
