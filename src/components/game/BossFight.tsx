@@ -26,6 +26,7 @@ export default function BossFight() {
   const [boss, setBoss] = useState<BossState | null>(null);
   const [choice, setChoice] = useState<number | null>(null);
   const [hit, setHit] = useState(0);
+  const [lastCorrect, setLastCorrect] = useState(false);
   const [flash, setFlash] = useState(false);
   const timer = useRef<number>();
 
@@ -44,6 +45,7 @@ export default function BossFight() {
     const q = round[boss.index];
     const correct = i === q.answerIndex;
     setChoice(i);
+    setLastCorrect(correct);
     if (correct) {
       sfx.coin();
       setHit((h) => h + 1);
@@ -79,8 +81,8 @@ export default function BossFight() {
         <span className="eyebrow">boss fight</span>
         <h2 className="section-title">The Hiring Manager</h2>
         <p className="section-subtitle">
-          Five questions about this portfolio. Three hearts. Beat the boss to
-          open the final gate.
+          Five questions about this portfolio. Three hits take the boss down,
+          three misses take you down. Win to open the final gate.
         </p>
       </motion.div>
 
@@ -114,7 +116,7 @@ export default function BossFight() {
           >
             <PixelSprite map={BOSS_FRAME} scale={4} />
             <AnimatePresence>
-              {hit > 0 && boss?.status === "playing" && choice !== null && (
+              {hit > 0 && boss?.status === "playing" && choice !== null && lastCorrect && (
                 <motion.span
                   key={hit}
                   initial={{ opacity: 1, y: 0, scale: 0.8 }}
@@ -132,11 +134,11 @@ export default function BossFight() {
             <div className="flex items-center justify-between gap-3">
               <p className="font-pixel text-[10px] text-foreground">THE HIRING MANAGER</p>
               <span className="font-mono text-[10px] text-muted-foreground">
-                {boss ? `HP ${boss.bossHp}/${boss.total}` : bossDefeated ? "Defeated" : "HP 5/5"}
+                {boss ? `HP ${boss.bossHp}/${boss.maxHp}` : bossDefeated ? "Defeated" : "HP 3/3"}
               </span>
             </div>
             <div className="mt-2 flex gap-1" role="img" aria-label="Boss health">
-              {Array.from({ length: boss?.total ?? 5 }, (_, i) => {
+              {Array.from({ length: boss?.maxHp ?? 3 }, (_, i) => {
                 const full = boss ? i < boss.bossHp : !bossDefeated;
                 return (
                   <motion.span
@@ -188,43 +190,44 @@ export default function BossFight() {
               <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                 Question {boss.index + 1} of {boss.total}
               </p>
-              <AnimatePresence mode="wait">
-                <motion.h3
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
                   key={question.id}
-                  initial={{ opacity: 0, y: 8 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.25 }}
-                  className="mt-2 font-display text-lg font-semibold leading-snug md:text-xl"
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.22 }}
                 >
-                  {question.prompt}
-                </motion.h3>
-              </AnimatePresence>
+                  <h3 className="mt-2 font-display text-lg font-semibold leading-snug md:text-xl">
+                    {question.prompt}
+                  </h3>
 
-              <div className="mt-5 grid gap-2 sm:grid-cols-2">
-                {question.options.map((opt, i) => {
-                  const revealed = choice !== null;
-                  const isAnswer = i === question.answerIndex;
-                  const isChoice = i === choice;
-                  let cls = "border-border bg-card/50 hover:border-accent/50 hover:bg-accent/5";
-                  if (revealed && isAnswer) cls = "border-emerald-400 bg-emerald-400/10 text-foreground";
-                  else if (revealed && isChoice) cls = "border-red-400 bg-red-400/10 text-foreground";
-                  else if (revealed) cls = "border-border/50 bg-card/30 text-muted-foreground";
-                  return (
-                    <motion.button
-                      key={`${question.id}-${i}`}
-                      type="button"
-                      disabled={revealed}
-                      onClick={() => pick(i)}
-                      whileTap={revealed ? undefined : { scale: 0.98 }}
-                      className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-colors ${cls}`}
-                    >
-                      <span className="font-pixel text-[9px] text-accent">{["A", "B", "C", "D"][i]}</span>
-                      <span>{opt}</span>
-                    </motion.button>
-                  );
-                })}
-              </div>
+                  <div className="mt-5 grid gap-2 sm:grid-cols-2">
+                    {question.options.map((opt, i) => {
+                      const revealed = choice !== null;
+                      const isAnswer = i === question.answerIndex;
+                      const isChoice = i === choice;
+                      let cls = "border-border bg-card/50 hover:border-accent/50 hover:bg-accent/5";
+                      if (revealed && isAnswer) cls = "border-emerald-400 bg-emerald-400/10 text-foreground";
+                      else if (revealed && isChoice) cls = "border-red-400 bg-red-400/10 text-foreground";
+                      else if (revealed) cls = "border-border/50 bg-card/30 text-muted-foreground";
+                      return (
+                        <motion.button
+                          key={`${question.id}-${i}`}
+                          type="button"
+                          disabled={revealed}
+                          onClick={() => pick(i)}
+                          whileTap={revealed ? undefined : { scale: 0.98 }}
+                          className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-colors ${cls}`}
+                        >
+                          <span className="font-pixel text-[9px] text-accent">{["A", "B", "C", "D"][i]}</span>
+                          <span>{opt}</span>
+                        </motion.button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
           )}
 

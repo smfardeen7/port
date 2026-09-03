@@ -140,7 +140,7 @@ export default function Footer() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
-            className="fixed bottom-20 left-1/2 z-[80] -translate-x-1/2 rounded-full border border-border sm:bottom-6
+            className="fixed bottom-20 left-1/2 z-[80] -translate-x-1/2 rounded-full border border-border lg:bottom-6
                        bg-card/95 px-4 py-2 text-sm shadow-lg backdrop-blur-md"
           >
             <span className="flex items-center gap-2">

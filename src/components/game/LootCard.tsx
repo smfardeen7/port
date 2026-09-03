@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, Github } from "lucide-react";
 import type { Project } from "@/constants";
@@ -13,7 +13,10 @@ interface Props {
   onOpen: () => void;
 }
 
-export default function LootCard({ project, index, onOpen }: Props) {
+const LootCard = forwardRef<HTMLDivElement, Props>(function LootCard(
+  { project, index, onOpen },
+  ref
+) {
   const collected = useGame((s) => s.projects.includes(project.id));
   const [hover, setHover] = useState(false);
   const detail = PROJECT_DETAILS[project.id];
@@ -27,6 +30,7 @@ export default function LootCard({ project, index, onOpen }: Props) {
 
   return (
     <motion.div
+      ref={ref}
       layout
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -122,4 +126,6 @@ export default function LootCard({ project, index, onOpen }: Props) {
       </TiltCard>
     </motion.div>
   );
-}
+});
+
+export default LootCard;

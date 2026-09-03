@@ -40,6 +40,7 @@
   }
 
   html {
+    position: relative;
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
   }

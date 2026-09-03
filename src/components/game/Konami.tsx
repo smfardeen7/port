@@ -31,8 +31,14 @@ export default function Konami() {
       sfx.win();
       burst({ particleCount: 160, spread: 120, origin: { y: 0.5 } });
       if (!reducedMotion()) {
+        // Spin around the centre of the viewport, not the centre of the
+        // whole document, so the page stays on screen during the roll.
+        const origin = `50% ${window.scrollY + window.innerHeight / 2}px`;
         document.documentElement.animate(
-          [{ transform: "rotate(0deg)" }, { transform: "rotate(360deg)" }],
+          [
+            { transform: "rotate(0deg)", transformOrigin: origin },
+            { transform: "rotate(360deg)", transformOrigin: origin },
+          ],
           { duration: 1100, easing: "cubic-bezier(.4,0,.2,1)" }
         );
       }

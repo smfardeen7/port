@@ -68,7 +68,7 @@ export default function App() {
           <Navbar />
           <ScrollToTop />
           <TLDRFloat />
-          <main className="pb-16 sm:pb-0">
+          <main className="pb-16 lg:pb-0">
             <Hero />
             <MarqueeStrip />
             <Experience />

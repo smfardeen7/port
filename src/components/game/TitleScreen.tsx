@@ -200,7 +200,7 @@ export default function TitleScreen() {
           </div>
         </motion.form>
 
-        <p className="mt-10 animate-blink font-pixel text-[9px] text-muted-foreground/80">
+        <p className="mt-10 hidden animate-blink font-pixel text-[9px] text-muted-foreground/80 sm:block">
           PRESS ENTER TO START
         </p>
       </div>

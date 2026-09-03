@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { levelFor, levelInfo, MAX_LEVEL } from "./levels";
@@ -127,8 +128,8 @@ function progress(
     toasts.push(
       mkToast({
         kind: "quest",
-        title: `Quest complete: ${q.title}`,
-        body: q.description,
+        title: q.title,
+        body: `Quest complete. ${q.description}`,
         icon: q.icon,
         xp: XP.quest,
       })
@@ -291,7 +292,8 @@ export const useGame = create<GameState>()(
   )
 );
 
-/** Convenience selector: current level details. */
+/** Convenience selector: current level details (memoised per xp value). */
 export function useLevel() {
-  return useGame((s) => levelInfo(s.xp));
+  const xp = useGame((s) => s.xp);
+  return useMemo(() => levelInfo(xp), [xp]);
 }

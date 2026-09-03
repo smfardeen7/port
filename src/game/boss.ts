@@ -21,12 +21,15 @@ export interface BossState {
   index: number;
   /** Questions in the round. */
   total: number;
+  /** Hits needed to win. */
+  maxHp: number;
   bossHp: number;
   hearts: number;
   status: "playing" | "won" | "lost";
 }
 
 export const MAX_HEARTS = 3;
+export const BOSS_HP = 3;
 
 export const QUESTION_BANK: BankQuestion[] = [
   {
@@ -150,8 +153,13 @@ export function createRound(rng: () => number, count = 5): RoundQuestion[] {
     });
 }
 
-export function initialBoss(count: number): BossState {
-  return { index: 0, total: count, bossHp: count, hearts: MAX_HEARTS, status: "playing" };
+/**
+ * Start a fight over `total` questions. The boss needs `hp` correct answers
+ * to go down (default 3, capped by the round length), the player loses at
+ * three wrong answers, so a five-question round always ends decisively.
+ */
+export function initialBoss(total: number, hp = Math.min(BOSS_HP, total)): BossState {
+  return { index: 0, total, maxHp: hp, bossHp: hp, hearts: MAX_HEARTS, status: "playing" };
 }
 
 export function answer(s: BossState, correct: boolean): BossState {
@@ -162,5 +170,5 @@ export function answer(s: BossState, correct: boolean): BossState {
   let status: BossState["status"] = "playing";
   if (bossHp <= 0) status = "won";
   else if (hearts <= 0 || index >= s.total) status = "lost";
-  return { index, total: s.total, bossHp, hearts, status };
+  return { index, total: s.total, maxHp: s.maxHp, bossHp, hearts, status };
 }

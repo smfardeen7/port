@@ -65,7 +65,7 @@ export default function HUD() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.3 }}
         aria-label="Player status"
-        className="fixed bottom-5 left-5 z-[60] hidden w-[268px] rounded-2xl border border-border/70 bg-card/85 p-3 shadow-xl shadow-black/10 backdrop-blur-md sm:block"
+        className="fixed bottom-5 left-5 z-[60] hidden w-[268px] rounded-2xl border border-border/70 bg-card/85 p-3 shadow-xl shadow-black/10 backdrop-blur-md lg:block"
       >
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 shrink-0 items-end justify-center overflow-hidden rounded-lg bg-muted/70">
@@ -115,7 +115,7 @@ export default function HUD() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.3 }}
         aria-label="Player status"
-        className="fixed inset-x-0 bottom-0 z-[60] flex items-center gap-3 border-t border-border/70 bg-background/90 px-3 py-2 backdrop-blur-md sm:hidden"
+        className="fixed inset-x-0 bottom-0 z-[60] flex items-center gap-3 border-t border-border/70 bg-background/90 px-3 py-2 backdrop-blur-md lg:hidden"
       >
         <div className="flex h-9 w-9 shrink-0 items-end justify-center overflow-hidden rounded-md bg-muted/70">
           <PixelSprite frame="idle" scale={2} />

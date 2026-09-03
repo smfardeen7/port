@@ -28,9 +28,21 @@ test("the same seed produces the same round", () => {
 test("correct answers drain the boss until it is defeated", () => {
   let s = initialBoss(2);
   s = answer(s, true);
-  assert.deepEqual(s, { index: 1, total: 2, bossHp: 1, hearts: 3, status: "playing" });
+  assert.deepEqual(s, { index: 1, total: 2, maxHp: 2, bossHp: 1, hearts: 3, status: "playing" });
   s = answer(s, true);
   assert.equal(s.status, "won");
+});
+
+test("a full round needs three hits, so one miss is survivable", () => {
+  let s = initialBoss(5);
+  assert.equal(s.maxHp, 3);
+  s = answer(s, false);
+  s = answer(s, true);
+  s = answer(s, true);
+  assert.equal(s.status, "playing");
+  s = answer(s, true);
+  assert.equal(s.status, "won");
+  assert.equal(s.hearts, 2);
 });
 
 test("three wrong answers lose the fight", () => {

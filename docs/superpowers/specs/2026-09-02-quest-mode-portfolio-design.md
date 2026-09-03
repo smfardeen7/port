@@ -179,8 +179,9 @@ right column (max 520×260). World units are pixels at 1×.
 - Question bank built in `boss.ts` from the constants (education, projects,
   publications, experience, certifications). Each question has one correct
   answer and three distractors from the same domain.
-- Boss HP 5 (one per question). Player hearts 3. A round is 5 questions
-  drawn without replacement, options shuffled with a seedable RNG.
+- Boss HP 3, player hearts 3, a round is 5 questions drawn without
+  replacement with options shuffled by a seedable RNG. Three correct answers
+  win, three wrong answers lose, so a full round always ends decisively.
 - Correct: boss shakes, HP bar drops, damage number floats, sfx. Wrong: screen
   flashes red, heart lost, correct answer highlighted, next question after 1.2s.
 - Win: confetti, `defeatBoss()`, "Hired!" badge, the contact CTA below gains a

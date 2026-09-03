@@ -1,6 +1,6 @@
 # Shaik Mohammad Fardeen — Portfolio
 
-A modern, responsive developer portfolio built with React, TypeScript, and Tailwind CSS. Features a dark-first design with an optional light theme, smooth animations, and interactive UI elements.
+A developer portfolio you can play. Built with React, TypeScript, and Tailwind CSS, it wraps a scannable résumé site in a game layer: a title screen, XP and levels, quests and badges, a runner mini-game, a skill tree, loot-card projects, and a boss fight. Every section still reads as a normal portfolio, and a "Skip to the résumé" button is never more than a click away.
 
 **Live:** [fardeen.bio](https://fardeen.bio/)
 
@@ -9,9 +9,28 @@ A modern, responsive developer portfolio built with React, TypeScript, and Tailw
 - **Framework:** React 18 + Vite 5
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS 3.4 with CSS custom properties (HSL theming)
-- **Animations:** Framer Motion, Lottie (lottie-react)
+- **Animations:** Framer Motion, canvas-confetti, Lenis smooth scroll, Web Audio (synthesized sound, no audio files)
+- **Game state:** zustand with localStorage persistence
 - **Icons:** Lucide React, React Icons
 - **Deployment:** Vercel
+
+## Quest Mode
+
+| Piece | What it does |
+|---|---|
+| Title screen | Press Start, pick a player name, sound toggle, or skip straight to the résumé. Returning visitors get "Continue". |
+| HUD | Bottom-left player card (bottom bar on phones) with level, XP bar, quest count, sound and résumé buttons. |
+| Zones | Every section is an area. Scrolling into one for the first time shows a "New area discovered" banner and grants XP. |
+| Quests and badges | Twelve quests (discover areas, unlock skills, collect projects, open the résumé, copy the email, beat the boss, a hidden cheat code) plus level-milestone badges, all in a slide-over quest log. |
+| Skill Run | Canvas runner in the hero. Space or tap to jump over bugs and collect tech icons. Every icon is XP; 15 in one run earns the Sprinter badge. Pauses when hidden or scrolled away. |
+| Skill Forge | Skills drawn as radial trees per category. Click a node to unlock it, click the core to unlock the whole branch. Phones get an unlockable chip grid. |
+| Career Road | A pixel character walks the experience timeline as you scroll; checkpoints light up as they are reached. |
+| Loot Vault | Projects as loot cards with rarity by category (Research is Legendary, AI & ML is Epic, Full-Stack is Rare, DevOps is Uncommon), a pointer-following shine, and a "Collected" stamp once opened. |
+| Boss fight | "The Hiring Manager": five multiple-choice questions about the portfolio. Three hits win, three misses lose. Winning unlocks the "Hired!" badge and lights up the contact CTA. |
+| Level up | Eight levels from Intern to Legend with a full-screen moment and confetti. |
+| Cheat code | The Konami code does what you would expect. |
+
+Progress lives in `localStorage` under `quest-mode-v1`. Reset it from the quest log or the command palette. Sound is off by default, synthesized with the Web Audio API, and respects `prefers-reduced-motion` alongside every animation (smooth scroll and confetti switch off).
 
 ## Features
 
@@ -25,7 +44,6 @@ A modern, responsive developer portfolio built with React, TypeScript, and Tailw
 - Copy-email button with confirmation toast
 - Custom animated cursor with magnetic hover effects on links and buttons
 - Infinite scrolling marquee keyword strip
-- Lottie animations (hero section, education section, loading screen)
 - Active section highlighting in navbar via IntersectionObserver
 - Scroll-to-top button and floating TL;DR shortcut
 - Responsive design across all breakpoints, with `prefers-reduced-motion` respected
@@ -35,16 +53,17 @@ A modern, responsive developer portfolio built with React, TypeScript, and Tailw
 
 | Section | Description |
 |---------|-------------|
-| Hero | Introduction with Lottie animation, social links, and CTAs |
-| Experience | Roles at Quadrant Technologies, Pratham USA, and Ethnus Codemithra |
-| Skills | Interactive grid of tech skills grouped by category |
+| Hero | Introduction, social links, CTAs, and the Skill Run mini-game |
+| Experience | Career Road: roles at Quadrant Technologies, Pratham USA, IEEE, and Ethnus Codemithra |
+| Skills | Skill Forge: unlockable radial skill trees grouped by category |
 | Education | Academic background with institution logo and Lottie animation |
 | Certifications | Licenses and programs, with issuer, date, and skills |
-| Projects | Filterable project showcase (AI & ML / Full-Stack / DevOps / Research); each card opens a detail modal |
+| Projects | Loot Vault: filterable loot cards (AI & ML / Full-Stack / DevOps / Research); each opens a detail modal |
 | Publications | Peer-reviewed research, with venue and summary |
 | GitHub | Live stats and most-used languages from the GitHub API |
 | TL;DR | Quick summary with animated key stats and a stylized code block |
-| Contact | Profile photo, social links, email, and resume |
+| Boss | The Hiring Manager quiz |
+| Contact | Profile photo, social links, email, and resume; glows once the boss is beaten |
 
 ## Getting Started
 
@@ -54,6 +73,9 @@ npm install
 
 # Start dev server
 npm run dev
+
+# Run the unit tests (game rules: levels, quests, boss, runner, sprites)
+npm test
 
 # Build for production
 npm run build

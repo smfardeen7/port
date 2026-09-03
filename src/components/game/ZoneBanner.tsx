@@ -34,8 +34,14 @@ function Banner({ toast }: { toast: Toast }) {
 
 export default function ZoneBanner() {
   const toasts = useGame((s) => s.toasts);
+  const dismiss = useGame((s) => s.dismissToast);
   const zones = toasts.filter((t) => t.kind === "zone");
   const zone = zones[zones.length - 1];
+
+  // Only the newest area banner stays; older ones clear immediately.
+  useEffect(() => {
+    zones.slice(0, -1).forEach((z) => dismiss(z.id));
+  }, [zones, dismiss]);
 
   return (
     <div
