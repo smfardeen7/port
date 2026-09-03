@@ -48,12 +48,12 @@ export const RUN_ICON_NAMES = [
 ];
 
 /**
- * Rasterize the react-icons SVGs into <img> elements the canvas can draw.
- * A failed load resolves to null so the renderer can fall back to a glyph.
+ * Rasterize react-icons SVGs into <img> elements a canvas can draw.
+ * A failed load resolves to null so callers can fall back to a glyph.
  */
-export function loadIconImages(color: string, size: number) {
+export function rasterizeIcons(icons: IconType[], color: string, size: number) {
   return Promise.all(
-    RUN_ICONS.map(
+    icons.map(
       (Icon) =>
         new Promise<HTMLImageElement | null>((resolve) => {
           let svg = renderToStaticMarkup(createElement(Icon, { color, size }));
@@ -67,4 +67,9 @@ export function loadIconImages(color: string, size: number) {
         })
     )
   );
+}
+
+/** The Skill Run coin icons, rasterized. */
+export function loadIconImages(color: string, size: number) {
+  return rasterizeIcons(RUN_ICONS, color, size);
 }

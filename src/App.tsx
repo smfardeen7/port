@@ -28,9 +28,12 @@ import QuestPanel from "@/components/game/QuestPanel";
 import ZoneObserver from "@/components/game/ZoneObserver";
 import Konami from "@/components/game/Konami";
 import BossFight from "@/components/game/BossFight";
+import Lazy3D from "@/components/three/Lazy3D";
 import { useGame } from "@/game/store";
 import { setSoundEnabled } from "@/game/sfx";
 import { initSmoothScroll, scrollToHash } from "@/lib/scroll";
+
+const loadBackdrop = () => import("@/components/three/Backdrop");
 
 export default function App() {
   const started = useGame((s) => s.started);
@@ -61,6 +64,7 @@ export default function App() {
       {started && (
         <div className="relative min-h-screen">
           <Aurora />
+          <Lazy3D load={loadBackdrop} className="pointer-events-none fixed inset-0 -z-[5]" margin="0px" />
           <CustomCursor />
           <LightModeBanner />
           <ScrollProgress />

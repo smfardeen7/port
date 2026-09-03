@@ -13,7 +13,11 @@ import { BOSS_FRAME } from "@/game/sprites";
 import { useGame } from "@/game/store";
 import { sfx } from "@/game/sfx";
 import { cannons } from "@/game/confetti";
+import { useBossFx } from "@/three/bossState";
 import PixelSprite from "./PixelSprite";
+import Lazy3D from "../three/Lazy3D";
+
+const loadBoss = () => import("../three/BossModel");
 
 const REVEAL_MS = 1200;
 
@@ -31,6 +35,11 @@ export default function BossFight() {
   const timer = useRef<number>();
 
   useEffect(() => () => window.clearTimeout(timer.current), []);
+
+  const won = boss?.status === "won";
+  useEffect(() => {
+    useBossFx.getState().set({ hit, defeated: won });
+  }, [hit, won]);
 
   const startFight = () => {
     const r = createRound(mulberry32(Date.now() >>> 0), 5);
@@ -108,13 +117,22 @@ export default function BossFight() {
 
         {/* Arena header: boss + bars */}
         <div className="flex flex-col gap-6 border-b border-border/50 bg-muted/20 p-6 sm:flex-row sm:items-center">
-          <motion.div
-            key={hit}
-            animate={reduce ? undefined : { y: [0, -5, 0] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-            className={`relative mx-auto shrink-0 sm:mx-0 ${hit > 0 ? "animate-shake" : ""}`}
-          >
-            <PixelSprite map={BOSS_FRAME} scale={4} />
+          <div className="relative mx-auto h-[128px] w-[128px] shrink-0 sm:mx-0">
+            <Lazy3D
+              load={loadBoss}
+              className="absolute inset-0"
+              margin="200px"
+              fallback={
+                <motion.div
+                  key={hit}
+                  animate={reduce ? undefined : { y: [0, -5, 0] }}
+                  transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+                  className={`grid h-full place-items-center ${hit > 0 ? "animate-shake" : ""}`}
+                >
+                  <PixelSprite map={BOSS_FRAME} scale={4} />
+                </motion.div>
+              }
+            />
             <AnimatePresence>
               {hit > 0 && boss?.status === "playing" && choice !== null && lastCorrect && (
                 <motion.span
@@ -122,13 +140,13 @@ export default function BossFight() {
                   initial={{ opacity: 1, y: 0, scale: 0.8 }}
                   animate={{ opacity: 0, y: -40, scale: 1.3 }}
                   transition={{ duration: 0.9, ease: "easeOut" }}
-                  className="pointer-events-none absolute -right-4 -top-2 font-pixel text-sm text-amber-400"
+                  className="pointer-events-none absolute -right-2 top-2 font-pixel text-sm text-amber-400"
                 >
                   -1
                 </motion.span>
               )}
             </AnimatePresence>
-          </motion.div>
+          </div>
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between gap-3">
