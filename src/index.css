@@ -237,4 +237,43 @@
     opacity: 0.4;
     mix-blend-mode: screen;
   }
+
+  /* --- Quest Mode ------------------------------------------------------ */
+  .pixelated {
+    image-rendering: pixelated;
+  }
+
+  /* Perspective floor grid behind the title screen */
+  .title-grid {
+    background-image:
+      linear-gradient(hsl(var(--accent) / 0.35) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--accent) / 0.35) 1px, transparent 1px);
+    background-size: 48px 48px;
+    transform: perspective(420px) rotateX(62deg);
+    transform-origin: 50% 0;
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+  }
+
+  /* Chromatic-offset "glitch" copy for pixel headings */
+  .pixel-glitch {
+    text-shadow:
+      3px 0 hsl(199 89% 55% / 0.85),
+      -3px 0 hsl(262 83% 70% / 0.85);
+  }
+
+  /* Lenis smooth scroll */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
 }
