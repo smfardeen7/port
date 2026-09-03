@@ -17,10 +17,10 @@ function Player({ palette, accent }: { palette: Record<string, string>; accent: 
     <VoxelModel
       map={PLAYER_FRAMES.idle}
       palette={palette}
-      scale={narrow ? 0.1 : 0.12}
+      scale={narrow ? 0.11 : 0.12}
       glowColor={accent}
       grounded
-      position={narrow ? [0, 0, -4.2] : [-3.1, 0, -0.4]}
+      position={narrow ? [0, 0, -5.4] : [-3.1, 0, -0.4]}
       bob={0.05}
       turn={0.4}
     />
