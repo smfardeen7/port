@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useMotionValue } from "framer-motion";
-import Lottie from "lottie-react";
 import { ArrowDown, Command, FileText, Linkedin, MapPin } from "lucide-react";
 import { ABOUT_ME, SOCIAL_MEDIA, RESUME_LINK } from "@/constants";
 import { openCommandPalette } from "./CommandPalette";
 import Magnetic from "./Magnetic";
-import heroAnimation from "@/assets/images/Hero/main_comp.json";
+import SkillRun from "./game/SkillRun";
+import { useGame } from "@/game/store";
 
 const LINKEDIN_URL = "https://www.linkedin.com/in/shaikmofardeen/";
 const ROLES = [
@@ -49,6 +49,7 @@ export default function Hero() {
   const my = useMotionValue(20);
   const [spotVisible, setSpotVisible] = useState(false);
   const glow = usePointerGlow(mx, my);
+  const markResume = useGame((s) => s.markResume);
 
   const onMouseMove = (e: React.MouseEvent) => {
     const rect = sectionRef.current?.getBoundingClientRect();
@@ -178,6 +179,7 @@ export default function Hero() {
                   href={RESUME_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={markResume}
                   className="inline-flex items-center gap-2 rounded-full border border-border
                              bg-card/50 px-6 py-2.5 text-sm font-medium text-foreground
                              transition-all hover:bg-muted"
@@ -198,20 +200,17 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Right — Lottie animation */}
+          {/* Right — Skill Run mini-game */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, x: 30 }}
+            initial={{ opacity: 0, scale: 0.94, x: 30 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             transition={{ duration: 0.7, delay: 0.4 }}
-            className="hidden md:col-span-2 md:block"
+            className="md:col-span-2"
           >
-            <div className="relative">
-              <Lottie
-                animationData={heroAnimation}
-                loop
-                className="w-full max-w-md"
-              />
-            </div>
+            <SkillRun />
+            <p className="mt-2 text-center font-mono text-[10px] text-muted-foreground/80 md:text-left">
+              Mini-game. Every icon you catch is XP.
+            </p>
           </motion.div>
         </div>
 

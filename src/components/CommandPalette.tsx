@@ -10,12 +10,17 @@ import {
   Linkedin,
   Mail,
   Moon,
+  RotateCcw,
+  ScrollText,
   Search,
   Sun,
+  Swords,
 } from "lucide-react";
 import { NAV_LINKS, RESUME_LINK, ABOUT_ME } from "@/constants";
 import { copyText } from "@/lib/clipboard";
 import { useTheme } from "@/lib/theme";
+import { lockScroll, scrollToHash, unlockScroll } from "@/lib/scroll";
+import { useGame } from "@/game/store";
 
 const OPEN_EVENT = "command-palette:open";
 
@@ -39,6 +44,11 @@ const GITHUB_URL = "https://github.com/smfardeen7";
 
 export default function CommandPalette() {
   const { theme, toggleTheme } = useTheme();
+  const markResume = useGame((s) => s.markResume);
+  const markEmail = useGame((s) => s.markEmail);
+  const markTheme = useGame((s) => s.markTheme);
+  const setPanel = useGame((s) => s.setPanel);
+  const resetGame = useGame((s) => s.reset);
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
@@ -55,22 +65,22 @@ export default function CommandPalette() {
   const go = useCallback(
     (hash: string) => {
       close();
-      const el = document.querySelector(hash);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-      else if (hash === "#home") window.scrollTo({ top: 0, behavior: "smooth" });
+      // Let the palette unlock scrolling before Lenis starts moving.
+      setTimeout(() => scrollToHash(hash === "#home" ? "#" : hash), 40);
     },
     [close]
   );
 
   const copyEmail = useCallback(async () => {
     const ok = await copyText(ABOUT_ME.email);
+    markEmail();
     if (ok) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1600);
     } else {
       window.location.href = `mailto:${ABOUT_ME.email}`;
     }
-  }, []);
+  }, [markEmail]);
 
   const items = useMemo<Item[]>(() => {
     const nav: Item[] = [
@@ -88,6 +98,14 @@ export default function CommandPalette() {
         icon: ArrowRight,
         run: () => go(l.link),
       })),
+      {
+        id: "nav-boss",
+        label: "Boss fight",
+        group: "Navigation",
+        keywords: "quiz game hiring manager",
+        icon: Swords,
+        run: () => go("#boss"),
+      },
     ];
 
     const actions: Item[] = [
@@ -108,6 +126,7 @@ export default function CommandPalette() {
         icon: FileText,
         run: () => {
           close();
+          markResume();
           window.open(RESUME_LINK, "_blank", "noopener");
         },
       },
@@ -117,7 +136,32 @@ export default function CommandPalette() {
         group: "Actions",
         keywords: "dark light mode appearance",
         icon: theme === "dark" ? Sun : Moon,
-        run: toggleTheme,
+        run: () => {
+          toggleTheme();
+          markTheme();
+        },
+      },
+      {
+        id: "act-quests",
+        label: "Open quest log",
+        group: "Actions",
+        keywords: "game achievements badges xp level",
+        icon: ScrollText,
+        run: () => {
+          close();
+          setTimeout(() => setPanel(true), 40);
+        },
+      },
+      {
+        id: "act-reset",
+        label: "Reset game progress",
+        group: "Actions",
+        keywords: "restart new game",
+        icon: RotateCcw,
+        run: () => {
+          close();
+          resetGame();
+        },
       },
     ];
 
@@ -157,7 +201,7 @@ export default function CommandPalette() {
     ];
 
     return [...nav, ...actions, ...links];
-  }, [go, close, copyEmail, copied, theme, toggleTheme]);
+  }, [go, close, copyEmail, copied, theme, toggleTheme, markResume, markTheme, setPanel, resetGame]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -207,10 +251,10 @@ export default function CommandPalette() {
   useEffect(() => {
     if (open) {
       const t = setTimeout(() => inputRef.current?.focus(), 20);
-      document.body.style.overflow = "hidden";
+      lockScroll();
       return () => {
         clearTimeout(t);
-        document.body.style.overflow = "";
+        unlockScroll();
       };
     }
   }, [open]);

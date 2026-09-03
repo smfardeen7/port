@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, Github, ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import { PROJECTS } from "@/constants";
 import type { Project } from "@/constants";
 import {
@@ -8,7 +8,10 @@ import {
   PROJECT_DETAILS,
   type ProjectCategory,
 } from "@/constants/projectDetails";
+import { RARITY_BY_CATEGORY, RARITY_STYLES } from "@/game/data";
+import { useGame } from "@/game/store";
 import ProjectModal from "./ProjectModal";
+import LootCard from "./game/LootCard";
 
 const INITIAL_SHOW = 6;
 type Filter = "All" | ProjectCategory;
@@ -17,8 +20,15 @@ export default function Projects() {
   const [showAll, setShowAll] = useState(false);
   const [filter, setFilter] = useState<Filter>("All");
   const [selected, setSelected] = useState<Project | null>(null);
+  const openProject = useGame((s) => s.openProject);
+  const collected = useGame((s) => s.projects.length);
 
   const filters: Filter[] = ["All", ...PROJECT_CATEGORIES];
+
+  const open = (project: Project) => {
+    setSelected(project);
+    openProject(project.id);
+  };
 
   const matching = useMemo(() => {
     if (filter === "All") return PROJECTS;
@@ -37,9 +47,13 @@ export default function Projects() {
         transition={{ duration: 0.5 }}
       >
         <span className="eyebrow">projects</span>
-        <h2 className="section-title">Things I've built</h2>
+        <h2 className="section-title">Loot Vault</h2>
         <p className="section-subtitle">
-          Click any card for the fuller story.
+          Every project is a loot card. Rarer categories glow brighter. Open a
+          card to collect it and read the fuller story.
+          <span className="ml-2 font-mono text-[11px] text-accent">
+            {collected}/{PROJECTS.length} collected
+          </span>
         </p>
       </motion.div>
 
@@ -58,6 +72,7 @@ export default function Projects() {
               : PROJECTS.filter((p) => PROJECT_DETAILS[p.id]?.category === f)
                   .length;
           const isActive = filter === f;
+          const rarity = f === "All" ? null : RARITY_STYLES[RARITY_BY_CATEGORY[f]];
           return (
             <button
               key={f}
@@ -72,6 +87,7 @@ export default function Projects() {
                              : "border-border bg-card/40 text-muted-foreground hover:text-foreground"
                          }`}
             >
+              {rarity && <span className={rarity.text}>◆</span>}
               {f}
               <span
                 className={`font-mono text-[10px] ${
@@ -88,82 +104,12 @@ export default function Projects() {
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <AnimatePresence mode="popLayout">
           {visible.map((project, idx) => (
-            <motion.button
+            <LootCard
               key={project.id}
-              layout
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.3, delay: idx * 0.04 }}
-              onClick={() => setSelected(project)}
-              whileHover={{ y: -3 }}
-              className="glass-card group flex flex-col p-5 text-left"
-            >
-              <div className="flex items-start gap-4">
-                {project.image && (
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-muted/50">
-                    <img
-                      src={project.image}
-                      alt=""
-                      className="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                  </div>
-                )}
-
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      {PROJECT_DETAILS[project.id] && (
-                        <span className="mb-0.5 block font-mono text-[10px] uppercase tracking-[0.16em] text-accent/80">
-                          {PROJECT_DETAILS[project.id].category}
-                        </span>
-                      )}
-                      <h3 className="font-display font-semibold transition-colors group-hover:text-accent">
-                        {project.title}
-                      </h3>
-                    </div>
-                    <div className="flex shrink-0 items-center gap-2">
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="text-muted-foreground transition-colors hover:text-foreground"
-                        aria-label={`${project.title} on GitHub`}
-                      >
-                        <Github className="h-4 w-4" />
-                      </a>
-                      {project.link && (
-                        <a
-                          href={project.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="text-muted-foreground transition-colors hover:text-foreground"
-                          aria-label={`${project.title} live demo`}
-                        >
-                          <ExternalLink className="h-4 w-4" />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-
-                  <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                    {project.content}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-4 flex flex-wrap gap-1.5">
-                {project.stack.map((tech) => (
-                  <span key={tech.id} className="pill text-[11px]">
-                    <tech.icon className="h-3 w-3" />
-                    {tech.name}
-                  </span>
-                ))}
-              </div>
-            </motion.button>
+              project={project}
+              index={idx}
+              onOpen={() => open(project)}
+            />
           ))}
         </AnimatePresence>
       </div>

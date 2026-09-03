@@ -3,13 +3,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Mail, ArrowUpRight, Check, Copy } from "lucide-react";
 import { SOCIAL_MEDIA, ABOUT_ME, EMAIL_LINK, RESUME_LINK } from "@/constants";
 import { copyText } from "@/lib/clipboard";
+import { useGame } from "@/game/store";
 import Magnetic from "./Magnetic";
 
 export default function Footer() {
   const [copied, setCopied] = useState(false);
+  const bossDefeated = useGame((s) => s.bossDefeated);
+  const markEmail = useGame((s) => s.markEmail);
+  const markResume = useGame((s) => s.markResume);
 
   const copyEmail = async () => {
     const ok = await copyText(ABOUT_ME.email);
+    markEmail();
     if (ok) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
@@ -41,8 +46,19 @@ export default function Footer() {
           </span>
         </div>
 
+        {bossDefeated && (
+          <motion.span
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-400/50 bg-amber-400/10 px-4 py-1.5 font-pixel text-[8px] text-amber-400"
+          >
+            👑 BOSS DEFEATED · THE GATE IS OPEN
+          </motion.span>
+        )}
         <span className="eyebrow">contact</span>
-        <h2 className="section-title">Let's build something</h2>
+        <h2 className="section-title">
+          {bossDefeated ? "You made it. Let's build something" : "Let's build something"}
+        </h2>
         <p className="section-subtitle mx-auto mt-3">
           I'm open to new opportunities. Whether you have a question or just want
           to say hi, my inbox is always open.
@@ -54,12 +70,15 @@ export default function Footer() {
               href={EMAIL_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-2.5
+              onClick={markEmail}
+              className={`inline-flex items-center gap-2 rounded-full bg-accent px-6 py-2.5
                          text-sm font-medium text-accent-foreground transition-all
-                         hover:opacity-90 hover:shadow-lg hover:shadow-accent/20"
+                         hover:opacity-90 hover:shadow-lg hover:shadow-accent/20 ${
+                           bossDefeated ? "animate-pulse-ring" : ""
+                         }`}
             >
               <Mail className="h-4 w-4" />
-              Say hello
+              {bossDefeated ? "Hire Fardeen" : "Say hello"}
             </a>
           </Magnetic>
           <button
@@ -79,6 +98,7 @@ export default function Footer() {
               href={RESUME_LINK}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={markResume}
               className="inline-flex items-center gap-2 rounded-full border border-border
                          bg-card/50 px-6 py-2.5 text-sm font-medium transition-all hover:bg-muted"
             >
@@ -120,7 +140,7 @@ export default function Footer() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
-            className="fixed bottom-6 left-1/2 z-[80] -translate-x-1/2 rounded-full border border-border
+            className="fixed bottom-20 left-1/2 z-[80] -translate-x-1/2 rounded-full border border-border lg:bottom-6
                        bg-card/95 px-4 py-2 text-sm shadow-lg backdrop-blur-md"
           >
             <span className="flex items-center gap-2">
