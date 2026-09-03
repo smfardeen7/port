@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { FileText, Play, RotateCcw, Volume2, VolumeX } from "lucide-react";
+import { ChevronDown, FileText, Play, RotateCcw, Volume2, VolumeX } from "lucide-react";
 import { RESUME_LINK } from "@/constants";
 import { useGame } from "@/game/store";
 import { levelInfo } from "@/game/levels";
@@ -48,12 +48,32 @@ export default function TitleScreen() {
     if (next) sfx.blip();
   };
 
+  // Enter, a scroll, or an upward swipe all start the quest.
   useEffect(() => {
+    let touchY: number | null = null;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Enter" && !(e.target instanceof HTMLButtonElement)) begin();
     };
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaY > 12) begin();
+    };
+    const onTouchStart = (e: TouchEvent) => {
+      touchY = e.touches[0]?.clientY ?? null;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      const y = e.touches[0]?.clientY;
+      if (touchY !== null && y !== undefined && touchY - y > 48) begin();
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+    };
   }, [begin]);
 
   const pixels = useMemo(
@@ -131,7 +151,7 @@ export default function TitleScreen() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="mt-4 max-w-sm text-sm text-muted-foreground md:text-base"
         >
-          An AI engineer's portfolio you can play. Explore the areas, unlock
+          An AI software engineer's portfolio you can play. Explore the areas, unlock
           skills, collect projects, and beat the boss. Progress is saved in this
           browser.
         </motion.p>
@@ -210,9 +230,17 @@ export default function TitleScreen() {
           </div>
         </motion.form>
 
-        <p className="mt-10 hidden animate-blink font-pixel text-[9px] text-muted-foreground/80 sm:block">
-          PRESS ENTER TO START
-        </p>
+        <div className="mt-10 flex flex-col items-center gap-2 text-muted-foreground/80">
+          <p className="hidden animate-blink font-pixel text-[9px] sm:block">PRESS ENTER OR SCROLL DOWN</p>
+          <p className="animate-blink font-pixel text-[9px] sm:hidden">SWIPE UP OR TAP START</p>
+          <motion.span
+            aria-hidden="true"
+            animate={reduce ? undefined : { y: [0, 6, 0] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <ChevronDown className="h-5 w-5" />
+          </motion.span>
+        </div>
       </div>
     </motion.div>
   );

@@ -112,9 +112,9 @@ function Branch({ group, index }: { group: SkillGroup; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.4, delay: index * 0.08 }}
-      className="glass-card overflow-hidden"
+      className="overflow-hidden"
     >
-      <div className="flex items-center justify-between border-b border-border/40 px-5 py-3">
+      <div className="flex items-center justify-between px-2 py-2">
         <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/80">
           {group.title}
         </h3>
@@ -124,7 +124,7 @@ function Branch({ group, index }: { group: SkillGroup; index: number }) {
       </div>
 
       {/* Radial tree (tablet and up) */}
-      <div className="hidden justify-center p-4 md:flex">
+      <div className="hidden justify-center py-2 md:flex">
         <div className="relative" style={{ width: SIZE, height: SIZE }}>
           <svg
             aria-hidden="true"
@@ -146,9 +146,12 @@ function Branch({ group, index }: { group: SkillGroup; index: number }) {
                   stroke="hsl(var(--accent))"
                   strokeWidth={1.5}
                   strokeOpacity={0.7}
-                  initial={{ pathLength: 0 }}
-                  animate={{ pathLength: 1 }}
-                  transition={{ duration: 0.5, ease: "easeOut" }}
+                  initial={{ pathLength: 0, opacity: 0.4 }}
+                  animate={{ pathLength: 1, opacity: [0.45, 1, 0.45] }}
+                  transition={{
+                    pathLength: { duration: 0.5, ease: "easeOut" },
+                    opacity: { duration: 2.6, repeat: Infinity, ease: "easeInOut", delay: (i % 5) * 0.3 },
+                  }}
                 />
               ) : (
                 <line
@@ -161,6 +164,7 @@ function Branch({ group, index }: { group: SkillGroup; index: number }) {
                   strokeWidth={1}
                   strokeDasharray="3 5"
                   strokeOpacity={0.7}
+                  className="dash-flow"
                 />
               );
             })}
@@ -199,7 +203,7 @@ function Branch({ group, index }: { group: SkillGroup; index: number }) {
       </div>
 
       {/* Chip grid (phones) */}
-      <div className="flex flex-wrap gap-2 p-4 md:hidden">
+      <div className="flex flex-wrap gap-2 px-2 py-2 md:hidden">
         {group.items.map((item) => {
           const on = unlocked.includes(item.id);
           return (
@@ -234,7 +238,7 @@ function Branch({ group, index }: { group: SkillGroup; index: number }) {
 
 export default function SkillTree() {
   return (
-    <div className="mt-12 grid gap-6 lg:grid-cols-2">
+    <div className="mt-8 grid gap-x-6 gap-y-10 lg:grid-cols-2">
       {SKILLS_LIST.map((group, index) => (
         <Branch key={group.title} group={group} index={index} />
       ))}

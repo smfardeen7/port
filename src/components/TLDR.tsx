@@ -86,7 +86,7 @@ function CodeBlock() {
         {"  "}
         <span className="text-sky-300">role</span>
         <span className="text-muted-foreground">:</span>{" "}
-        <span className="text-green-400">"AI Engineer"</span>
+        <span className="text-green-400">"AI Software Engineer"</span>
         <span className="text-muted-foreground">,</span>
         <br />
         {"  "}

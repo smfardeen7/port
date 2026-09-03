@@ -51,14 +51,14 @@ export default function SkillGalaxySection() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
       transition={{ duration: 0.5 }}
-      className="mt-10 overflow-hidden rounded-2xl border border-border/60 bg-card/40 backdrop-blur-sm"
+      className="mt-10 overflow-hidden rounded-2xl"
     >
       <Lazy3D
         load={loadGalaxy}
         className="relative h-[380px] md:h-[500px]"
         fallback={<GalaxyFallback />}
       />
-      <div className="flex items-center justify-between gap-3 border-t border-border/40 px-4 py-2.5 text-xs">
+      <div className="flex items-center justify-between gap-3 px-2 py-2.5 text-xs">
         <span className={hovered ? "text-foreground" : "text-muted-foreground"}>{caption}</span>
         <span className="shrink-0 font-mono text-[10px] text-muted-foreground">
           {unlocked.length}/{SKILL_TOTAL}

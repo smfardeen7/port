@@ -13,7 +13,7 @@ const loadHero = () => import("./three/HeroScene");
 
 const LINKEDIN_URL = "https://www.linkedin.com/in/shaikmofardeen/";
 const ROLES = [
-  "AI Engineer",
+  "AI Software Engineer",
   "ML Researcher",
   "Full-Stack Developer",
   "Explainable-AI Builder",
