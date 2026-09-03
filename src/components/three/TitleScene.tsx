@@ -7,11 +7,12 @@ import { SiGithubactions, SiJupyter, SiNodedotjs, SiPandas, SiScikitlearn } from
 import { VscAzure } from "react-icons/vsc";
 import { RUN_ICONS } from "@/game/icons";
 import { AVATAR_URL } from "@/constants";
+import { DEFAULT_PALETTE, PLAYER_FRAMES } from "@/game/sprites";
 import { accentColor, isDarkTheme } from "@/three/support";
 import { haloTexture, iconTextures } from "@/three/textures";
 import Scene from "./Scene";
 import HumanFigure from "./HumanFigure";
-import NeonFloor from "./NeonFloor";
+import VoxelModel from "./VoxelModel";
 import type { SceneProps } from "./Lazy3D";
 
 const TITLE_ICONS = [...RUN_ICONS, SiScikitlearn, SiPandas, VscAzure, SiNodedotjs, SiJupyter, SiGithubactions];
@@ -33,7 +34,7 @@ function layout(narrow: boolean): Slot[] {
     if (narrow) {
       slots.push({
         x: -2.1 + (i / (n - 1)) * 4.2,
-        y: 2.5 + (i % 3) * 0.55,
+        y: 3.4 + (i % 3) * 0.5,
         z: -3 - (i % 4) * 0.8,
         size: 0.5 + (i % 3) * 0.08,
         speed: 0.6 + (i % 5) * 0.12,
@@ -44,7 +45,7 @@ function layout(narrow: boolean): Slot[] {
       const k = Math.floor(i / 2);
       slots.push({
         x: side * (3.4 + (k % 3) * 0.95 + (k > 5 ? 0.7 : 0)),
-        y: 0.5 + ((k * 0.55) % 2.6),
+        y: side < 0 ? 2.4 + ((k * 0.5) % 1.3) : 0.5 + ((k * 0.55) % 2.6),
         z: -1.2 - (k % 4) * 0.9,
         size: 0.55 + (k % 3) * 0.1,
         speed: 0.6 + (k % 5) * 0.12,
@@ -116,21 +117,44 @@ function FloatingSkills({ accent }: { accent: string }) {
   );
 }
 
-/** Optional avatar beside the title, only when VITE_AVATAR_URL is set. */
-function Avatar() {
+/** The voxel player beside the title (or the avatar when VITE_AVATAR_URL is set). */
+function Player({ accent }: { accent: string }) {
   const aspect = useThree((s) => s.viewport.aspect);
   const narrow = aspect < 0.9;
+  const palette = useMemo(() => ({ ...DEFAULT_PALETTE, s: accent }), [accent]);
+  const halo = useMemo(haloTexture, []);
+  if (AVATAR_URL) {
+    return (
+      <HumanFigure
+        height={narrow ? 1.7 : 1.85}
+        position={narrow ? [0, 0, -5.4] : [-3.1, 0, -0.2]}
+        followPointer
+        shadow
+      />
+    );
+  }
+  const position: [number, number, number] = narrow ? [0, 1.55, -6.5] : [-3.1, 0.15, -0.4];
   return (
-    <HumanFigure
-      height={narrow ? 1.7 : 1.85}
-      position={narrow ? [0, 0, -5.4] : [-3.1, 0, -0.2]}
-      followPointer
-      shadow
-    />
+    <group>
+      <VoxelModel
+        map={PLAYER_FRAMES.idle}
+        palette={palette}
+        scale={narrow ? 0.085 : 0.12}
+        glowColor={accent}
+        grounded
+        position={position}
+        bob={0.06}
+        turn={0.4}
+      />
+      {/* Soft pool of light where the floor used to be */}
+      <sprite position={[position[0], position[1] - 0.05, position[2]]} scale={[2.6, 0.7, 1]}>
+        <spriteMaterial map={halo} color={accent} transparent opacity={0.28} depthWrite={false} blending={THREE.AdditiveBlending} />
+      </sprite>
+    </group>
   );
 }
 
-/** Title screen backdrop: neon floor, stars, and floating skill icons. */
+/** Title screen backdrop: stars, the voxel player, and floating skill icons. */
 export default function TitleScene({ active }: SceneProps) {
   const accent = useMemo(accentColor, []);
   const fogColor = isDarkTheme() ? "#0b1120" : "#e9eef6";
@@ -143,9 +167,8 @@ export default function TitleScene({ active }: SceneProps) {
       <pointLight position={[0, 3, 2]} intensity={14} color={accent} distance={14} />
       <Stars radius={70} depth={30} count={1400} factor={3} saturation={0} fade speed={0.4} />
       <Sparkles count={70} scale={[16, 6, 10]} position={[0, 3, 0]} size={2.5} speed={0.25} color="#7dd3fc" />
-      <NeonFloor color={accent} />
       <FloatingSkills accent={accent} />
-      {AVATAR_URL && <Avatar />}
+      <Player accent={accent} />
       <EffectComposer>
         <Bloom mipmapBlur luminanceThreshold={0.55} luminanceSmoothing={0.2} intensity={0.8} />
       </EffectComposer>
