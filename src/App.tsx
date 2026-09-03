@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { AnimatePresence } from "framer-motion";
 import Aurora from "@/components/Aurora";
 import CustomCursor from "@/components/CustomCursor";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -19,7 +18,6 @@ import TLDR from "@/components/TLDR";
 import Footer from "@/components/Footer";
 import LightModeBanner from "@/components/LightModeBanner";
 import TLDRFloat from "@/components/TLDRFloat";
-import TitleScreen from "@/components/game/TitleScreen";
 import HUD from "@/components/game/HUD";
 import Toasts from "@/components/game/Toasts";
 import ZoneBanner from "@/components/game/ZoneBanner";
@@ -34,7 +32,6 @@ import { setSoundEnabled } from "@/game/sfx";
 import { initSmoothScroll, scrollToHash } from "@/lib/scroll";
 
 export default function App() {
-  const started = useGame((s) => s.started);
   const soundOn = useGame((s) => s.soundOn);
 
   useEffect(() => {
@@ -42,7 +39,6 @@ export default function App() {
   }, [soundOn]);
 
   useEffect(() => {
-    if (!started) return;
     const stop = initSmoothScroll();
     const hash = window.location.hash;
     if (hash) {
@@ -53,47 +49,41 @@ export default function App() {
       };
     }
     return stop;
-  }, [started]);
+  }, []);
 
   return (
-    <>
-      <AnimatePresence>{!started && <TitleScreen key="title" />}</AnimatePresence>
+    <div className="relative min-h-screen">
+      <Aurora />
+      <CustomCursor />
+      <LightModeBanner />
+      <ScrollProgress />
+      <CommandPalette />
+      <Navbar />
+      <ScrollToTop />
+      <TLDRFloat />
+      <main className="pb-16 lg:pb-0">
+        <Hero />
+        <MarqueeStrip />
+        <Journey />
+        <Experience />
+        <Skills />
+        <Education />
+        <Certifications />
+        <Projects />
+        <Publications />
+        <GitHubStats />
+        <TLDR />
+        <BossFight />
+        <Footer />
+      </main>
 
-      {started && (
-        <div className="relative min-h-screen">
-          <Aurora />
-          <CustomCursor />
-          <LightModeBanner />
-          <ScrollProgress />
-          <CommandPalette />
-          <Navbar />
-          <ScrollToTop />
-          <TLDRFloat />
-          <main className="pb-16 lg:pb-0">
-            <Hero />
-            <MarqueeStrip />
-            <Journey />
-            <Experience />
-            <Skills />
-            <Education />
-            <Certifications />
-            <Projects />
-            <Publications />
-            <GitHubStats />
-            <TLDR />
-            <BossFight />
-            <Footer />
-          </main>
-
-          <HUD />
-          <Toasts />
-          <ZoneBanner />
-          <LevelUp />
-          <QuestPanel />
-          <ZoneObserver />
-          <Konami />
-        </div>
-      )}
-    </>
+      <HUD />
+      <Toasts />
+      <ZoneBanner />
+      <LevelUp />
+      <QuestPanel />
+      <ZoneObserver />
+      <Konami />
+    </div>
   );
 }
