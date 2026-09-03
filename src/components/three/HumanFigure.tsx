@@ -223,34 +223,50 @@ function ProceduralFigure({
         {/* Head */}
         <group ref={head} position={[0, 1.83, 0]}>
           <group position={[0, -1.83, 0]}>
+            {/* Skull & Face Base */}
             <mesh position={[0, 1.83, 0]} scale={[0.96, 1.12, 1]} castShadow>
               <sphereGeometry args={[0.2, 32, 24]} />
-              <meshStandardMaterial color={C.skin} roughness={0.62} />
+              <meshStandardMaterial color={C.skin} roughness={0.52} metalness={0.05} />
+            </mesh>
+            {/* Jawline & Chin Definition */}
+            <mesh position={[0, 1.76, 0.05]} scale={[0.82, 0.5, 0.8]}>
+              <sphereGeometry args={[0.18, 24, 18]} />
+              <meshStandardMaterial color={C.skinDark} roughness={0.6} />
             </mesh>
             {/* Stubble along the jaw */}
             <mesh position={[0, 1.83, 0.01]} scale={[1.005, 1.1, 1.005]}>
               <sphereGeometry args={[0.19, 32, 24, 0, Math.PI * 2, Math.PI * 0.6, Math.PI * 0.3]} />
-              <meshStandardMaterial color={C.stubble} roughness={0.9} transparent opacity={0.45} />
+              <meshStandardMaterial color={C.stubble} roughness={0.9} transparent opacity={0.5} />
             </mesh>
-            {/* Ears */}
+            {/* Realistic Ears with Lobe Detail */}
             {[-1, 1].map((s) => (
-              <mesh key={s} position={[s * 0.19, 1.82, 0]} scale={[0.55, 1, 0.8]}>
-                <sphereGeometry args={[0.038, 14, 10]} />
-                <meshStandardMaterial color={C.skinDark} roughness={0.7} />
-              </mesh>
+              <group key={s} position={[s * 0.19, 1.82, 0]}>
+                <mesh scale={[0.55, 1, 0.8]}>
+                  <sphereGeometry args={[0.038, 14, 10]} />
+                  <meshStandardMaterial color={C.skinDark} roughness={0.65} />
+                </mesh>
+                <mesh position={[s * 0.005, -0.012, 0.005]} scale={[0.4, 0.5, 0.5]}>
+                  <sphereGeometry args={[0.025, 10, 8]} />
+                  <meshStandardMaterial color={C.skin} roughness={0.6} />
+                </mesh>
+              </group>
             ))}
-            {/* Hair: cap plus a swept quiff */}
+            {/* Layered Realistic Hair: base cap + textured quiff layers */}
             <mesh position={[0, 1.86, -0.015]} scale={[0.99, 1.08, 1.02]}>
               <sphereGeometry args={[0.205, 32, 20, 0, Math.PI * 2, 0, Math.PI * 0.52]} />
-              <meshStandardMaterial color={C.hair} roughness={0.95} />
+              <meshStandardMaterial color={C.hair} roughness={0.8} />
             </mesh>
             <mesh position={[0.04, 2.0, 0.08]} rotation={[0.25, 0.1, -0.35]} scale={[1.35, 0.55, 1]}>
               <sphereGeometry args={[0.12, 20, 14]} />
-              <meshStandardMaterial color={C.hair} roughness={0.95} />
+              <meshStandardMaterial color="#221c28" roughness={0.75} />
             </mesh>
             <mesh position={[-0.13, 1.96, 0.05]} rotation={[0.2, 0, 0.4]} scale={[1.1, 0.5, 0.9]}>
               <sphereGeometry args={[0.11, 20, 14]} />
-              <meshStandardMaterial color={C.hair} roughness={0.95} />
+              <meshStandardMaterial color="#2a2232" roughness={0.75} />
+            </mesh>
+            <mesh position={[0.08, 2.02, 0.11]} rotation={[0.3, 0.15, -0.2]} scale={[0.9, 0.4, 0.8]}>
+              <sphereGeometry args={[0.09, 16, 12]} />
+              <meshStandardMaterial color="#352c3f" roughness={0.7} />
             </mesh>
             {/* Brows */}
             {[-1, 1].map((s) => (
@@ -263,15 +279,19 @@ function ProceduralFigure({
               <Eye x={-0.072} />
               <Eye x={0.072} />
             </group>
-            {/* Nose */}
-            <mesh position={[0, 1.8, 0.19]} scale={[0.7, 1.15, 0.8]}>
-              <sphereGeometry args={[0.03, 14, 12]} />
-              <meshStandardMaterial color={C.skinDark} roughness={0.65} />
+            {/* Nose with Defined Bridge */}
+            <mesh position={[0, 1.82, 0.18]} scale={[0.5, 1.2, 0.8]}>
+              <boxGeometry args={[0.035, 0.07, 0.04]} />
+              <meshStandardMaterial color={C.skinDark} roughness={0.55} />
             </mesh>
-            {/* Mouth */}
+            <mesh position={[0, 1.79, 0.195]} scale={[0.7, 0.8, 0.8]}>
+              <sphereGeometry args={[0.024, 14, 12]} />
+              <meshStandardMaterial color={C.skin} roughness={0.58} />
+            </mesh>
+            {/* Mouth & Lips */}
             <mesh position={[0, 1.735, 0.168]} rotation={[0.1, 0, Math.PI]}>
               <torusGeometry args={[0.038, 0.0065, 8, 18, Math.PI]} />
-              <meshStandardMaterial color={C.lips} roughness={0.7} />
+              <meshStandardMaterial color={C.lips} roughness={0.65} />
             </mesh>
           </group>
         </group>

@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import LoadingScreen from "@/components/LoadingScreen";
 import Aurora from "@/components/Aurora";
 import CustomCursor from "@/components/CustomCursor";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -33,6 +34,7 @@ import { initSmoothScroll, scrollToHash } from "@/lib/scroll";
 
 export default function App() {
   const soundOn = useGame((s) => s.soundOn);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setSoundEnabled(soundOn);
@@ -53,6 +55,7 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen">
+      {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
       <Aurora />
       <CustomCursor />
       <LightModeBanner />
