@@ -5,6 +5,7 @@ import { SKILL_TOTAL } from "@/game/data";
 import { useGame } from "@/game/store";
 import { sfx } from "@/game/sfx";
 import SkillTree from "./game/SkillTree";
+import SkillGalaxySection from "./game/SkillGalaxySection";
 
 export default function Skills() {
   const unlocked = useGame((s) => s.skills.length);
@@ -53,6 +54,7 @@ export default function Skills() {
         </button>
       </motion.div>
 
+      <SkillGalaxySection />
       <SkillTree />
     </section>
   );

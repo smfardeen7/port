@@ -9,6 +9,7 @@ A developer portfolio you can play. Built with React, TypeScript, and Tailwind C
 - **Framework:** React 18 + Vite 5
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS 3.4 with CSS custom properties (HSL theming)
+- **3D:** three.js via React Three Fiber, drei, and postprocessing (bloom), lazy-loaded
 - **Animations:** Framer Motion, canvas-confetti, Lenis smooth scroll, Web Audio (synthesized sound, no audio files)
 - **Game state:** zustand with localStorage persistence
 - **Icons:** Lucide React, React Icons
@@ -29,6 +30,20 @@ A developer portfolio you can play. Built with React, TypeScript, and Tailwind C
 | Boss fight | "The Hiring Manager": five multiple-choice questions about the portfolio. Three hits win, three misses lose. Winning unlocks the "Hired!" badge and lights up the contact CTA. |
 | Level up | Eight levels from Intern to Legend with a full-screen moment and confetti. |
 | Cheat code | The Konami code does what you would expect. |
+
+### 3D layer
+
+Five scenes built with React Three Fiber, all generated at runtime from the pixel sprites and icons already in the repo (no model or texture files):
+
+| Scene | Where | What |
+|---|---|---|
+| Title | start screen | Neon grid floor scrolling toward you, star field, and the voxel player standing on it with bloom |
+| Hero | next to Skill Run | The voxel player turning toward the pointer with tech-icon coins orbiting on two rings |
+| Backdrop | behind the page | Ninety translucent voxel cubes drifting with pointer parallax and scroll |
+| Skill Galaxy | top of Skill Forge | All 52 skills as icons on a sphere. Drag to spin, click to unlock, unlocked icons glow |
+| Boss | arena header | The Hiring Manager in voxels, recoiling on hits and toppling when beaten |
+
+The 3D code is code-split and only loads when WebGL is available and `prefers-reduced-motion` is off. Each scene has a 2D fallback, renders only while it is near the viewport and the tab is visible, and caps device pixel ratio at 1.5.
 
 Progress lives in `localStorage` under `quest-mode-v1`. Reset it from the quest log or the command palette. Sound is off by default, synthesized with the Web Audio API, and respects `prefers-reduced-motion` alongside every animation (smooth scroll and confetti switch off).
 

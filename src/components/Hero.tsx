@@ -5,7 +5,11 @@ import { ABOUT_ME, SOCIAL_MEDIA, RESUME_LINK } from "@/constants";
 import { openCommandPalette } from "./CommandPalette";
 import Magnetic from "./Magnetic";
 import SkillRun from "./game/SkillRun";
+import PixelSprite from "./game/PixelSprite";
+import Lazy3D from "./three/Lazy3D";
 import { useGame } from "@/game/store";
+
+const loadHero = () => import("./three/HeroScene");
 
 const LINKEDIN_URL = "https://www.linkedin.com/in/shaikmofardeen/";
 const ROLES = [
@@ -207,6 +211,18 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.4 }}
             className="md:col-span-2"
           >
+            <div className="relative mx-auto mb-3 h-[220px] w-full max-w-[520px] md:h-[270px]">
+              <Lazy3D
+                load={loadHero}
+                className="absolute inset-0"
+                margin="0px"
+                fallback={
+                  <div className="grid h-full place-items-center">
+                    <PixelSprite frame="idle" scale={6} />
+                  </div>
+                }
+              />
+            </div>
             <SkillRun />
             <p className="mt-2 text-center font-mono text-[10px] text-muted-foreground/80 md:text-left">
               Mini-game. Every icon you catch is XP.

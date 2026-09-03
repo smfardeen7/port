@@ -6,8 +6,11 @@ import { useGame } from "@/game/store";
 import { levelInfo } from "@/game/levels";
 import { setSoundEnabled, sfx, unlockAudio } from "@/game/sfx";
 import PixelSprite from "./PixelSprite";
+import Lazy3D from "../three/Lazy3D";
+import { use3D } from "@/three/support";
 
 const PIXELS = 18;
+const loadTitle = () => import("../three/TitleScene");
 
 export default function TitleScreen() {
   const xp = useGame((s) => s.xp);
@@ -19,6 +22,7 @@ export default function TitleScreen() {
   const discoverZone = useGame((s) => s.discoverZone);
   const markResume = useGame((s) => s.markResume);
   const reduce = useReducedMotion();
+  const threeD = use3D();
 
   const [name, setName] = useState(playerName);
   const returning = xp > 0;
@@ -75,36 +79,42 @@ export default function TitleScreen() {
       aria-modal="true"
       aria-label="Start screen"
     >
-      {/* Horizon glow + perspective floor */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-1/2 h-1/2"
-      >
-        <div className="absolute inset-x-0 -top-24 h-48 bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.28),transparent_60%)]" />
-        <div className={`title-grid absolute inset-0 ${reduce ? "" : "animate-grid-scroll"}`} />
-      </div>
+      {/* 3D floor scene, with the CSS grid as the fallback and loading state */}
+      <Lazy3D
+        load={loadTitle}
+        className="absolute inset-0"
+        margin="0px"
+        fallback={
+          <>
+            <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-1/2 h-1/2">
+              <div className="absolute inset-x-0 -top-24 h-48 bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.28),transparent_60%)]" />
+              <div className={`title-grid absolute inset-0 ${reduce ? "" : "animate-grid-scroll"}`} />
+            </div>
+            <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+              {pixels.map((p) => (
+                <motion.span
+                  key={p.id}
+                  className="absolute rounded-[1px]"
+                  style={{ left: p.left, top: p.top, width: p.size, height: p.size, background: p.color }}
+                  animate={reduce ? { opacity: 0.35 } : { y: [0, -28, 0], opacity: [0.15, 0.7, 0.15] }}
+                  transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
+                />
+              ))}
+            </div>
+          </>
+        }
+      />
 
-      {/* Floating pixels */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        {pixels.map((p) => (
-          <motion.span
-            key={p.id}
-            className="absolute rounded-[1px]"
-            style={{ left: p.left, top: p.top, width: p.size, height: p.size, background: p.color }}
-            animate={reduce ? { opacity: 0.35 } : { y: [0, -28, 0], opacity: [0.15, 0.7, 0.15] }}
-            transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
-          />
-        ))}
-      </div>
-
-      <div className="relative mx-auto flex w-full max-w-md flex-col items-center px-6 text-center">
-        <motion.div
-          animate={reduce ? undefined : { y: [0, -6, 0] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-          className="mb-6"
-        >
-          <PixelSprite frame="idle" scale={5} />
-        </motion.div>
+      <div className="relative z-10 mx-auto flex w-full max-w-md flex-col items-center px-6 text-center">
+        {!threeD && (
+          <motion.div
+            animate={reduce ? undefined : { y: [0, -6, 0] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            className="mb-6"
+          >
+            <PixelSprite frame="idle" scale={5} />
+          </motion.div>
+        )}
 
         <motion.h1
           initial={{ opacity: 0, y: 12 }}
