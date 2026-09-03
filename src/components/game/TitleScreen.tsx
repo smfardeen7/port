@@ -7,6 +7,7 @@ import { levelInfo } from "@/game/levels";
 import { setSoundEnabled, sfx, unlockAudio } from "@/game/sfx";
 import PixelSprite from "./PixelSprite";
 import Lazy3D from "../three/Lazy3D";
+import { use3D } from "@/three/support";
 
 const PIXELS = 18;
 const loadTitle = () => import("../three/TitleScene");
@@ -21,6 +22,7 @@ export default function TitleScreen() {
   const discoverZone = useGame((s) => s.discoverZone);
   const markResume = useGame((s) => s.markResume);
   const reduce = useReducedMotion();
+  const threeD = use3D();
 
   const [name, setName] = useState(playerName);
   const returning = xp > 0;
@@ -104,13 +106,15 @@ export default function TitleScreen() {
       />
 
       <div className="relative z-10 mx-auto flex w-full max-w-md flex-col items-center px-6 text-center">
-        <motion.div
-          animate={reduce ? undefined : { y: [0, -6, 0] }}
-          transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-          className="mb-6"
-        >
-          <PixelSprite frame="idle" scale={5} />
-        </motion.div>
+        {!threeD && (
+          <motion.div
+            animate={reduce ? undefined : { y: [0, -6, 0] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+            className="mb-6"
+          >
+            <PixelSprite frame="idle" scale={5} />
+          </motion.div>
+        )}
 
         <motion.h1
           initial={{ opacity: 0, y: 12 }}

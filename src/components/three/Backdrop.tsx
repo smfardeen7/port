@@ -22,8 +22,8 @@ function Cubes() {
     return Array.from({ length: COUNT }, (_, i) => ({
       x: (rng() - 0.5) * 34,
       y: (rng() - 0.5) * 20,
-      z: -7 + rng() * 11,
-      size: 0.15 + rng() * 0.5,
+      z: -9 + rng() * 10,
+      size: 0.12 + rng() * 0.34,
       speed: 0.2 + rng() * 0.5,
       phase: rng() * Math.PI * 2,
       rot: rng() * Math.PI,

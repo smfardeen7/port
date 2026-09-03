@@ -48,12 +48,12 @@ function Boss() {
       <VoxelModel
         map={BOSS_FRAME}
         palette={DEFAULT_PALETTE}
-        scale={0.13}
+        scale={0.16}
         glowColor="#ef4444"
         glowIntensity={1.2}
-        position={[0, -0.25, 0]}
+        position={[0, -0.15, 0]}
         bob={0.1}
-        turn={0.35}
+        turn={0.45}
       />
       <pointLight ref={light} color="#ef4444" position={[0, 0.5, 2]} distance={8} intensity={2} />
     </group>
@@ -63,7 +63,7 @@ function Boss() {
 /** The Hiring Manager in voxels: hovers, recoils on a hit, topples when beaten. */
 export default function BossModel({ active }: SceneProps) {
   return (
-    <Scene active={active} camera={{ position: [0, 0.3, 6.2], fov: 40 }}>
+    <Scene active={active} camera={{ position: [0.6, 0.4, 5.6], fov: 40 }}>
       <ambientLight intensity={0.8} />
       <directionalLight position={[3, 5, 4]} intensity={1.3} />
       <pointLight position={[-3, 2, 3]} intensity={6} color="#a78bfa" distance={12} />
