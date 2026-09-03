@@ -38,7 +38,7 @@ Five scenes built with React Three Fiber, all generated at runtime from the pixe
 
 | Scene | Where | What |
 |---|---|---|
-| Title | start screen | Neon grid floor scrolling toward you, star field, and the voxel player standing on it with bloom |
+| Title | start screen | Star field, the voxel player, and glowing tech-skill icons drifting beside the title |
 | Hero | next to Skill Run | The voxel player turning toward the pointer with tech-icon coins orbiting on two rings |
 | Skill Galaxy | top of Skill Forge | All 52 skills as icons on a sphere. Drag to spin, click to unlock, unlocked icons glow |
 | Boss | arena header | The Hiring Manager in voxels, recoiling on hits and toppling when beaten |

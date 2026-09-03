@@ -108,7 +108,6 @@ export default function TitleScreen() {
           <>
             <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-1/2 h-1/2">
               <div className="absolute inset-x-0 -top-24 h-48 bg-[radial-gradient(ellipse_at_center,hsl(var(--accent)/0.28),transparent_60%)]" />
-              <div className={`title-grid absolute inset-0 ${reduce ? "" : "animate-grid-scroll"}`} />
             </div>
             <div aria-hidden="true" className="pointer-events-none absolute inset-0">
               {pixels.map((p) => (

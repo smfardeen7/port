@@ -244,18 +244,6 @@
     image-rendering: pixelated;
   }
 
-  /* Perspective floor grid behind the title screen */
-  .title-grid {
-    background-image:
-      linear-gradient(hsl(var(--accent) / 0.35) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--accent) / 0.35) 1px, transparent 1px);
-    background-size: 48px 48px;
-    transform: perspective(420px) rotateX(62deg);
-    transform-origin: 50% 0;
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
-    mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
-  }
-
   /* Dashed connection lines that slowly flow toward the node */
   .dash-flow {
     animation: dashFlow 1.4s linear infinite;
