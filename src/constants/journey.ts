@@ -69,7 +69,7 @@ export const CHAPTERS: Chapter[] = [
     title: "Now",
     setting: "Fairfax, Virginia, today",
     text:
-      "Today I build AI systems that can explain themselves, and the software around them. I earned Anthropic's \"Claude with the Anthropic API\" certification, I'm finishing my M.S., and I'm looking for the team where the next chapter happens. If you're reading this, you might be it.",
+      "Today I build AI systems that can explain themselves, and the software around them. I'm finishing my M.S., and I'm ready for the team where the next chapter happens. If you're reading this, you might be it.",
     gains: ["Ready"],
     link: { label: "Say hello", href: "#contact" },
   },

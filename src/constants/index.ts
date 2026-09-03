@@ -30,8 +30,8 @@ export const ABOUT_ME = {
   name: "Shaik Mohammad Fardeen",
   firstName: "Mohammad",
   lastName: "Fardeen",
-  tagLine: "AI Engineer · M.S. Computer Science @ George Mason University",
-  intro: "AI Engineer and software developer based in Fairfax, Virginia.",
+  tagLine: "AI Software Engineer · M.S. Computer Science @ George Mason University",
+  intro: "AI Software Engineer based in Fairfax, Virginia.",
   email: "shaikfardeen595@gmail.com",
 };
 
