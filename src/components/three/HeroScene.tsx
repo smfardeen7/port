@@ -3,16 +3,19 @@ import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Sparkles } from "@react-three/drei";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import { DEFAULT_PALETTE, PLAYER_FRAMES } from "@/game/sprites";
 import { RUN_ICONS } from "@/game/icons";
 import { accentColor } from "@/three/support";
 import { haloTexture, iconTextures } from "@/three/textures";
+import { AVATAR_URL } from "@/constants";
 import Scene from "./Scene";
+import VoxelModel from "./VoxelModel";
 import HumanFigure from "./HumanFigure";
 import type { SceneProps } from "./Lazy3D";
 
 const RINGS = [
-  { radius: 1.9, tilt: 0.42, roll: 0.15, speed: 0.35, count: 6, offset: 0 },
-  { radius: 2.5, tilt: -0.55, roll: -0.2, speed: -0.24, count: 6, offset: Math.PI / 6 },
+  { radius: 2.4, tilt: 0.42, roll: 0.15, speed: 0.35, count: 6, offset: 0 },
+  { radius: 3.2, tilt: -0.55, roll: -0.2, speed: -0.24, count: 6, offset: Math.PI / 6 },
 ];
 
 function Ring({
@@ -50,7 +53,7 @@ function Ring({
               if (el) coins.current[i] = el;
             }}
           >
-            <sprite scale={[0.8, 0.8, 1]}>
+            <sprite scale={[1, 1, 1]}>
               <spriteMaterial
                 map={halo}
                 color={accent}
@@ -60,7 +63,7 @@ function Ring({
                 blending={THREE.AdditiveBlending}
               />
             </sprite>
-            <sprite scale={[0.42, 0.42, 1]}>
+            <sprite scale={[0.52, 0.52, 1]}>
               <spriteMaterial map={tex} transparent depthWrite={false} />
             </sprite>
           </group>
@@ -103,22 +106,32 @@ function Parallax({ children }: { children: React.ReactNode }) {
   return <group ref={group}>{children}</group>;
 }
 
-/** Hero centrepiece: Fardeen in 3D with tech-icon coins orbiting. */
+/** Hero centrepiece: the voxel player with tech-icon coins orbiting. */
 export default function HeroScene({ active }: SceneProps) {
   const accent = useMemo(accentColor, []);
+  const palette = useMemo(() => ({ ...DEFAULT_PALETTE, s: accent }), [accent]);
 
   return (
-    <Scene active={active} camera={{ position: [0, 0.15, 5.6], fov: 36 }}>
-      <ambientLight intensity={0.55} />
-      <hemisphereLight args={["#dbeafe", "#1e293b", 0.6]} />
-      <directionalLight position={[3, 5, 4]} intensity={1.6} castShadow />
-      <directionalLight position={[-4, 2, -3]} intensity={1.1} color={accent} />
-      <pointLight position={[3, -1, 2]} intensity={5} color="#a78bfa" distance={10} />
-      <HumanFigure height={2.5} position={[0, -1.3, 0]} followPointer wave shadow />
+    <Scene active={active} camera={{ position: [0, 0.9, 8.4], fov: 40 }}>
+      <ambientLight intensity={0.75} />
+      <directionalLight position={[3, 6, 4]} intensity={1.4} />
+      <pointLight position={[-3, 2, 3]} intensity={12} color={accent} distance={14} />
+      <pointLight position={[3, -1, 2]} intensity={7} color="#a78bfa" distance={12} />
+      {AVATAR_URL ? (
+        <HumanFigure height={3.2} position={[0, -1.7, 0]} followPointer shadow />
+      ) : (
+        <VoxelModel
+          map={PLAYER_FRAMES.idle}
+          palette={palette}
+          scale={0.21}
+          glowColor={accent}
+          position={[0, -0.1, 0]}
+          bob={0.12}
+          turn={0.2}
+        />
+      )}
       <Parallax>
-        <group position={[0, 0.1, 0]}>
-          <Coins accent={accent} />
-        </group>
+        <Coins accent={accent} />
       </Parallax>
       <Sparkles count={40} scale={[9, 5, 4]} size={2} speed={0.2} color="#7dd3fc" />
       <EffectComposer>
