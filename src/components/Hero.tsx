@@ -211,14 +211,14 @@ export default function Hero() {
             transition={{ duration: 0.7, delay: 0.4 }}
             className="md:col-span-2"
           >
-            <div className="relative mx-auto mb-3 h-[220px] w-full max-w-[520px] md:h-[270px]">
+            <div className="relative mx-auto mb-3 h-[260px] w-full max-w-[520px] md:h-[300px]">
               <Lazy3D
                 load={loadHero}
                 className="absolute inset-0"
                 margin="0px"
                 fallback={
                   <div className="grid h-full place-items-center">
-                    <PixelSprite frame="idle" scale={6} />
+                    <PixelSprite frame="idle" scale={7} />
                   </div>
                 }
               />

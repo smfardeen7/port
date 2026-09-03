@@ -1,4 +1,5 @@
 import { PROJECTS, SKILLS_LIST } from "@/constants";
+import { CHAPTER_TOTAL } from "@/constants/journey";
 import type { ProjectCategory } from "@/constants/projectDetails";
 
 export interface Zone {
@@ -10,6 +11,7 @@ export interface Zone {
 
 export const ZONES: Zone[] = [
   { id: "home", name: "Spawn Point", sectionId: "home" },
+  { id: "journey", name: "Origin Story", sectionId: "journey" },
   { id: "experience", name: "Career Road", sectionId: "experience" },
   { id: "skills", name: "Skill Forge", sectionId: "skills" },
   { id: "education", name: "The Academy", sectionId: "education" },
@@ -26,6 +28,7 @@ export const XP = {
   zone: 20,
   skill: 5,
   project: 15,
+  chapter: 10,
   coin: 2,
   coinCap: 60,
   quest: 50,
@@ -34,6 +37,7 @@ export const XP = {
 
 export const SKILL_TOTAL = SKILLS_LIST.reduce((n, g) => n + g.items.length, 0);
 export const PROJECT_TOTAL = PROJECTS.length;
+export { CHAPTER_TOTAL };
 
 export type Rarity = "legendary" | "epic" | "rare" | "uncommon";
 

@@ -15,6 +15,8 @@ export interface QuestFacts {
   bossDefeated: boolean;
   konami: boolean;
   themeToggled: boolean;
+  chaptersRead: number;
+  chaptersTotal: number;
 }
 
 export interface QuestDef {
@@ -43,6 +45,13 @@ export const QUESTS: QuestDef[] = [
     description: "Discover every area.",
     icon: "🗺️",
     progress: (f) => ({ value: f.zonesDiscovered, target: f.zonesTotal }),
+  },
+  {
+    id: "origin-story",
+    title: "Origin Story",
+    description: "Read every chapter of the journey.",
+    icon: "📖",
+    progress: (f) => ({ value: f.chaptersRead, target: f.chaptersTotal }),
   },
   {
     id: "forge-10",
