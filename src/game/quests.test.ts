@@ -20,6 +20,8 @@ const base: QuestFacts = {
   bossDefeated: false,
   konami: false,
   themeToggled: false,
+  chaptersRead: 0,
+  chaptersTotal: 6,
 };
 
 test("first-steps completes at three zones", () => {
@@ -53,6 +55,12 @@ test("boolean quests report 0/1 progress", () => {
     target: 1,
     done: true,
   });
+});
+
+test("origin-story completes once every chapter is read", () => {
+  const q = QUESTS.find((x) => x.id === "origin-story")!;
+  assert.deepEqual(questProgress(q, { ...base, chaptersRead: 4 }), { value: 4, target: 6, done: false });
+  assert.deepEqual(newlyCompleted({ ...base, chaptersRead: 6 }, []), ["origin-story"]);
 });
 
 test("every quest has a unique id", () => {

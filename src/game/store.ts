@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { levelFor, levelInfo, MAX_LEVEL } from "./levels";
 import { newlyCompleted, QUESTS, type QuestFacts } from "./quests";
-import { PROJECT_TOTAL, SKILL_TOTAL, XP, ZONES } from "./data";
+import { CHAPTER_TOTAL, PROJECT_TOTAL, SKILL_TOTAL, XP, ZONES } from "./data";
 
 export type ToastKind = "xp" | "zone" | "quest" | "achievement" | "info";
 
@@ -26,6 +26,7 @@ export interface GameState {
   zones: string[];
   skills: string[];
   projects: string[];
+  chapters: string[];
   quests: string[];
   achievements: string[];
   bestRun: number;
@@ -47,6 +48,7 @@ export interface GameState {
   unlockSkill: (id: string) => void;
   unlockSkills: (ids: string[]) => void;
   openProject: (id: string) => void;
+  readChapter: (id: string) => void;
   finishRun: (score: number) => void;
   defeatBoss: () => void;
   triggerKonami: () => void;
@@ -69,6 +71,7 @@ const INITIAL = {
   zones: [] as string[],
   skills: [] as string[],
   projects: [] as string[],
+  chapters: [] as string[],
   quests: [] as string[],
   achievements: [] as string[],
   bestRun: 0,
@@ -99,6 +102,8 @@ export function factsFrom(s: Data): QuestFacts {
     bossDefeated: s.bossDefeated,
     konami: s.konami,
     themeToggled: s.themeToggled,
+    chaptersRead: s.chapters.length,
+    chaptersTotal: CHAPTER_TOTAL,
   };
 }
 
@@ -199,6 +204,12 @@ export const useGame = create<GameState>()(
         );
       },
 
+      readChapter: (id) => {
+        const s = get();
+        if (s.chapters.includes(id)) return;
+        set(progress(s, { chapters: [...s.chapters, id] }, XP.chapter));
+      },
+
       finishRun: (score) => {
         const s = get();
         const gained = Math.min(score * XP.coin, XP.coinCap);
@@ -279,6 +290,7 @@ export const useGame = create<GameState>()(
         zones: s.zones,
         skills: s.skills,
         projects: s.projects,
+        chapters: s.chapters,
         quests: s.quests,
         achievements: s.achievements,
         bestRun: s.bestRun,

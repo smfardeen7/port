@@ -20,6 +20,8 @@ export { PROJECTS } from "./projects";
 export type { Project, TechIcon } from "./projects";
 
 export const RESUME_LINK = "/resume.pdf";
+/** Optional Ready Player Me (or any humanoid) .glb; set VITE_AVATAR_URL to use it. */
+export const AVATAR_URL: string = (import.meta.env.VITE_AVATAR_URL as string | undefined)?.trim() ?? "";
 export const REPO_LINK = "https://github.com/smfardeen7";
 export const EMAIL_LINK =
   "https://mail.google.com/mail/?view=cm&fs=1&to=shaikfardeen595@gmail.com&su=Portfolio%20Inquiry";
@@ -34,9 +36,9 @@ export const ABOUT_ME = {
 };
 
 export const NAV_LINKS = [
+  { link: "#journey", title: "Journey" },
   { link: "#experience", title: "Experience" },
   { link: "#skills", title: "Skills" },
-  { link: "#certifications", title: "Certifications" },
   { link: "#projects", title: "Projects" },
   { link: "#github", title: "GitHub" },
   { link: "#boss", title: "Boss" },

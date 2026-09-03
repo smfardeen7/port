@@ -99,6 +99,14 @@ export default function CommandPalette() {
         run: () => go(l.link),
       })),
       {
+        id: "nav-certifications",
+        label: "Certifications",
+        group: "Navigation",
+        keywords: "badges licenses",
+        icon: ArrowRight,
+        run: () => go("#certifications"),
+      },
+      {
         id: "nav-boss",
         label: "Boss fight",
         group: "Navigation",
