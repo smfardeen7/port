@@ -16,7 +16,7 @@ export default function LightModeBanner() {
         animate={{ x: 0, opacity: 1 }}
         exit={{ x: -100, opacity: 0 }}
         transition={{ type: "spring", damping: 20, stiffness: 200 }}
-        className="fixed bottom-6 left-6 z-[60] flex items-center gap-2.5 rounded-lg border border-amber-400/30
+        className="fixed left-4 top-20 z-[60] flex items-center gap-2.5 rounded-lg border border-amber-400/30
                    bg-amber-50 px-4 py-2.5 shadow-lg dark:hidden"
       >
         <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600" />

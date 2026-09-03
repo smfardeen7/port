@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
-import Loading from "@/components/Loading";
 import Aurora from "@/components/Aurora";
 import CustomCursor from "@/components/CustomCursor";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -20,33 +19,46 @@ import TLDR from "@/components/TLDR";
 import Footer from "@/components/Footer";
 import LightModeBanner from "@/components/LightModeBanner";
 import TLDRFloat from "@/components/TLDRFloat";
+import TitleScreen from "@/components/game/TitleScreen";
+import HUD from "@/components/game/HUD";
+import Toasts from "@/components/game/Toasts";
+import ZoneBanner from "@/components/game/ZoneBanner";
+import LevelUp from "@/components/game/LevelUp";
+import QuestPanel from "@/components/game/QuestPanel";
+import ZoneObserver from "@/components/game/ZoneObserver";
+import Konami from "@/components/game/Konami";
+import BossFight from "@/components/game/BossFight";
+import { useGame } from "@/game/store";
+import { setSoundEnabled } from "@/game/sfx";
+import { initSmoothScroll, scrollToHash } from "@/lib/scroll";
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
+  const started = useGame((s) => s.started);
+  const soundOn = useGame((s) => s.soundOn);
 
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const timer = setTimeout(() => setLoading(false), reduce ? 400 : 2400);
-    return () => clearTimeout(timer);
-  }, []);
+    setSoundEnabled(soundOn);
+  }, [soundOn]);
 
   useEffect(() => {
-    if (loading) return;
+    if (!started) return;
+    const stop = initSmoothScroll();
     const hash = window.location.hash;
-    if (!hash) return;
-    requestAnimationFrame(() => {
-      const el = document.querySelector(hash);
-      if (el) el.scrollIntoView();
-    });
-  }, [loading]);
+    if (hash) {
+      const t = setTimeout(() => scrollToHash(hash), 650);
+      return () => {
+        clearTimeout(t);
+        stop();
+      };
+    }
+    return stop;
+  }, [started]);
 
   return (
     <>
-      <AnimatePresence mode="wait">
-        {loading && <Loading key="loading" />}
-      </AnimatePresence>
+      <AnimatePresence>{!started && <TitleScreen key="title" />}</AnimatePresence>
 
-      {!loading && (
+      {started && (
         <div className="relative min-h-screen">
           <Aurora />
           <CustomCursor />
@@ -56,7 +68,7 @@ export default function App() {
           <Navbar />
           <ScrollToTop />
           <TLDRFloat />
-          <main>
+          <main className="pb-16 sm:pb-0">
             <Hero />
             <MarqueeStrip />
             <Experience />
@@ -67,8 +79,17 @@ export default function App() {
             <Publications />
             <GitHubStats />
             <TLDR />
+            <BossFight />
             <Footer />
           </main>
+
+          <HUD />
+          <Toasts />
+          <ZoneBanner />
+          <LevelUp />
+          <QuestPanel />
+          <ZoneObserver />
+          <Konami />
         </div>
       )}
     </>

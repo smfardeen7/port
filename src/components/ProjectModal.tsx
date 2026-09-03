@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, Check, Github, X } from "lucide-react";
 import type { Project } from "@/constants";
 import { PROJECT_DETAILS } from "@/constants/projectDetails";
+import { RARITY_BY_CATEGORY, RARITY_STYLES } from "@/game/data";
+import { lockScroll, unlockScroll } from "@/lib/scroll";
+import { sfx } from "@/game/sfx";
 
 interface Props {
   project: Project | null;
@@ -16,14 +19,16 @@ export default function ProjectModal({ project, onClose }: Props) {
       if (e.key === "Escape") onClose();
     };
     window.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
+    lockScroll();
+    sfx.unlock();
     return () => {
       window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
+      unlockScroll();
     };
   }, [project, onClose]);
 
   const detail = project ? PROJECT_DETAILS[project.id] : undefined;
+  const rarity = detail ? RARITY_STYLES[RARITY_BY_CATEGORY[detail.category]] : undefined;
 
   return (
     <AnimatePresence>
@@ -44,12 +49,15 @@ export default function ProjectModal({ project, onClose }: Props) {
             role="dialog"
             aria-modal="true"
             aria-label={project.title}
-            initial={{ opacity: 0, y: 16, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 12, scale: 0.98 }}
-            transition={{ type: "spring", stiffness: 320, damping: 30 }}
-            className="relative flex max-h-full w-full max-w-lg flex-col overflow-hidden
-                       rounded-2xl border border-border bg-card shadow-2xl shadow-black/30"
+            initial={{ opacity: 0, rotateY: -80, scale: 0.94 }}
+            animate={{ opacity: 1, rotateY: 0, scale: 1 }}
+            exit={{ opacity: 0, rotateY: 30, scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 240, damping: 26 }}
+            style={{ transformPerspective: 1200, boxShadow: rarity?.glow }}
+            className={`relative flex max-h-full w-full max-w-lg flex-col overflow-hidden
+                       rounded-2xl border bg-card shadow-2xl shadow-black/30 ${
+                         rarity?.border ?? "border-border"
+                       }`}
           >
             <button
               onClick={onClose}
@@ -73,9 +81,12 @@ export default function ProjectModal({ project, onClose }: Props) {
                   </div>
                 )}
                 <div className="min-w-0 pr-8">
-                  {detail && (
-                    <span className="mb-1 inline-block font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
+                  {detail && rarity && (
+                    <span className="mb-1 flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
                       {detail.category}
+                      <span className={`font-pixel text-[8px] normal-case tracking-normal ${rarity.text}`}>
+                        ◆ {rarity.label}
+                      </span>
                     </span>
                   )}
                   <h3 className="font-display text-xl font-bold leading-tight">

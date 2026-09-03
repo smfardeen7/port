@@ -39,5 +39,6 @@ export const NAV_LINKS = [
   { link: "#certifications", title: "Certifications" },
   { link: "#projects", title: "Projects" },
   { link: "#github", title: "GitHub" },
+  { link: "#boss", title: "Boss" },
   { link: "#contact", title: "Contact" },
 ];
